@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/codigo-build.iml" filepath="$PROJECT_DIR$/.idea/modules/codigo-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/codigo_reactive_domain_modeling.iml" filepath="$PROJECT_DIR$/.idea/modules/codigo_reactive_domain_modeling.iml" />
+    </modules>
+  </component>
+</project>
