@@ -13,7 +13,7 @@ import co.com.chapter1.modules.AccountService
 
 
 
-object  Main extends  App{
+object  Chapter1Main extends  App{
 
   def today = Calendar.getInstance.getTime
   val a = Account("a1", "John", today)
