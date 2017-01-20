@@ -38,7 +38,7 @@ trait AccountService {
 
   /**
     *
-    * @tparam A: Constrain to ensure that only InterestBearingAccount are passed
+    * @tparam A: PARAM Constrain to ensure that only InterestBearingAccount are passed
     * @return
     */
   def calculateInterest[A <: InterestBearingAccount]: A => BigDecimal = {a =>
