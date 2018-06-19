@@ -4,7 +4,7 @@
 		module="func-prog-in-scala$sources_2.12"
 		revision="0.1"
 		status="integration"
-		publication="20180616103952"
+		publication="20180618175618"
 	/>
 	<configurations>
 		<conf name="compile" visibility="public" description=""/>
