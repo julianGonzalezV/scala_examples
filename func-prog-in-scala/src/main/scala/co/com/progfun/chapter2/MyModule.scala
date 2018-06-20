@@ -59,6 +59,43 @@ object MyModule {
 
   }
 
+  /**
+    * Retorna el primer index en array, donde el valor del index es igual al key dado
+    * Version monomorfica
+    * @param array
+    * @param key
+    * @return
+    */
+  def findFirst(ss: Array[String], key: String): Int ={
+
+    def findIter(n:Int): Int ={
+      if(n >= ss.length)
+        -1
+      else if(ss(n).equals(key))
+        n
+      else
+        findIter(n+1)
+    }
+
+    findIter(0)
+
+  }
+
+
+//Versoin que acepta cualquier tipo
+  def findFirstPolymor [T] (ss: Array[T], f: T => Boolean): Int = {
+    def findIter(n:Int): Int ={
+      if(n >= ss.length)
+        -1
+      else if(f(ss(n)))
+        n
+      else
+        findIter(n+1)
+    }
+
+    findIter(0)
+  }
+
 
   // el main es considerado un procedure o impure function
   def main(args: Array[String]): Unit ={
@@ -72,6 +109,13 @@ object MyModule {
 
     println("fibo: "+fibo(7))
     println("fiboTailRec: BAD result "+fiboTailRec(7))
+
+    println("::::::::::::::::: Polimorphic Functions  ::::::::::")
+    println(findFirst( Array("Apple", "Banana", "Orange"), "Orange"))
+    println(findFirstPolymor( Array(4, 5, 6),  (x:Int) => x > 5))
+
+    println("::::::::::::::::: Polimorphic Functions  ::::::::::")
+
   }
 
 }
