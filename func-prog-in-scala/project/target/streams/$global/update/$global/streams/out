@@ -1,4 +1,4 @@
-[info] Updating {file:/home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/}func-prog-in-scala-build...
+[info] Updating {file:/D:/carpetaDocumentsJulian/estudio/scala/scala_examples/func-prog-in-scala/project/}func-prog-in-scala-build...
 [debug] :: resolving dependencies :: default#func-prog-in-scala-build;0.1-SNAPSHOT
 [debug] 	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool]
 [debug] 	validate = true
@@ -6070,19 +6070,19 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#template-resolver;0.1!template-resolver.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#jline;2.10.7!jline.jar
 [debug] 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar
-[debug] :: resolution report :: resolve 1114ms :: artifacts dl 19ms
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT compile produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-compile.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT runtime produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-runtime.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT test produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-test.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT provided produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-provided.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT optional produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-optional.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT compile-internal produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-compile-internal.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT runtime-internal produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-runtime-internal.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT test-internal produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-test-internal.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT plugin produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-plugin.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT sources produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-sources.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT docs produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-docs.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT pom produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-pom.xml
-[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT scala-tool produced in /home/jag/Documents/study/scala/scala_examples/func-prog-in-scala/project/target/scala-2.10/sbt-0.13/resolution-cache/reports/default-func-prog-in-scala-build-scala-tool.xml
-[debug] 	resolve done (1114ms resolve - 19ms download)
+[debug] :: resolution report :: resolve 1939ms :: artifacts dl 97ms
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT compile produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-compile.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT runtime produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-runtime.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT test produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-test.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT provided produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-provided.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT optional produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-optional.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT compile-internal produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-compile-internal.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT runtime-internal produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-runtime-internal.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT test-internal produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-test-internal.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT plugin produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-plugin.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT sources produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-sources.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT docs produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-docs.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT pom produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-pom.xml
+[debug] 	report for default#func-prog-in-scala-build;0.1-SNAPSHOT scala-tool produced in D:\carpetaDocumentsJulian\estudio\scala\scala_examples\func-prog-in-scala\project\target\scala-2.10\sbt-0.13\resolution-cache\reports\default-func-prog-in-scala-build-scala-tool.xml
+[debug] 	resolve done (1939ms resolve - 97ms download)
 [info] Done updating.

@@ -6,7 +6,7 @@ object MyModule {
   def abs(number: Int): Int = if (number > 0) number else -number
 
   private def formatAbs(x: Int) = {
-    val msg = "the absolute value o %d id %d"
+    val msg = "the absolute value o %d is %d"
     msg.format(x, abs(x))
   }
 
@@ -21,6 +21,18 @@ object MyModule {
     factorialIter(n, 1)
   }
 
+  private def formatFactorial(x: Int) = {
+    val msg = "the factorial value o %d is %d"
+    msg.format(x, factorial(x))
+  }
+
+
+  //formatAbs y formatFactorial son identicos, es allí donde podemos generalizar
+  def formatOperation(opName: String, x: Int, f: Int => Int )={
+    val msg = "the %s value o %d is %d"
+    msg.format(opName, x, f(x))
+  }
+
 
   def fibo(n: Int): Int = {
     if (n == 0) 0
@@ -31,13 +43,16 @@ object MyModule {
 
 
 
-
+//tail recursive está muy duro de hacer no me funciona
   def fiboTailRec(n: Int ):Int ={
 
-    def fiboIter(n: Int, acc): Int = {
-      if (n <= 1) acc
+    def fiboIter(n: Int, acc:Int): Int = {
+      println("entra con n = "+n + " y acc con "+ acc)
+      if (n == 0) acc
+      else if (n == 1)  acc+1
       else
-        fiboIter(n - 1, acc + n)
+
+        fiboIter(n - 1, acc+ n-1+n -2 )
     }
 
     fiboIter(n, 0)
@@ -48,8 +63,15 @@ object MyModule {
   // el main es considerado un procedure o impure function
   def main(args: Array[String]): Unit ={
     println(formatAbs(-42))
-    println("facto: "+factorial(5))
+    println(formatFactorial(5))
+
+    println("::::::::::::::::: generalizando SOLO REQUIERE DE UNA SOLA FUNCION :)  ")
+    println(formatOperation("absolute", -5, abs ))
+    println(formatOperation("Factorial", 5, factorial ))
+    println("::::::::::::::::: ")
+
     println("fibo: "+fibo(7))
+    println("fiboTailRec: BAD result "+fiboTailRec(7))
   }
 
 }
