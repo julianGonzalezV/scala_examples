@@ -60,8 +60,45 @@ object MyModule {
   }
 
 
+  def fRepetition(num:Int,arr:List[Int]):List[Int] ={
+    arr.flatMap(x => {
+      (1 to num).map(repetition => {
+        println(x)
+        x
+      })
+    })
+  }
+
+  def fRepetition2(num:Int,arr:List[Int]):List[Int] ={
+
+    def iter [A](n: Int, value:A, acc: List[A]): List[A]  = {
+      if (n <= 0) acc
+      else iter(n-1, value, value :: acc )
+    }
+    arr.flatMap(x => iter(num, x, List.empty))
+  }
+
+  def f(arr:List[Int]):List[Int] = {
+    arr.filter(x => arr.indexOf(x)% 2 != 0)
+
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution
+*/
+
+  }
+
+
   // el main es considerado un procedure o impure function
   def main(args: Array[String]): Unit ={
+
+
+
+    val array1 = List(1,2,3, 4, 5, 6, 7)
+    println(array1.filter(x => array1.indexOf(x)% 2 != 0).toList)
+
+    val array2 = List(1,2,3, 4, 5, 6, 7)
+    List.empty :+ 1
+    println(array2.filter(x => array2.indexOf(x)% 2 != 0))
+
     println(formatAbs(-42))
     println(formatFactorial(5))
 
@@ -72,6 +109,9 @@ object MyModule {
 
     println("fibo: "+fibo(7))
     println("fiboTailRec: BAD result "+fiboTailRec(7))
+
+    println("frepetition-->"+fRepetition(4, List(5,7)) )
+    println("frepetition2-->"+fRepetition(4, List(5,7)) )
   }
 
 }
