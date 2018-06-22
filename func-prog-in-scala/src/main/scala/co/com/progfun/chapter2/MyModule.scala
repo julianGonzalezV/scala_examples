@@ -82,7 +82,7 @@ object MyModule {
   }
 
 
-//Versoin que acepta cualquier tipo
+//Version que acepta cualquier tipo
   def findFirstPolymor [T] (ss: Array[T], f: T => Boolean): Int = {
     def findIter(n:Int): Int ={
       if(n >= ss.length)
@@ -94,6 +94,20 @@ object MyModule {
     }
 
     findIter(0)
+  }
+
+
+  def isSorted [A] (as: Array[A], orderedFunction: (A,A) => Boolean): Boolean ={
+    def isSortedIter(n:Int, result: Boolean): Boolean ={
+      //println("n= "+ n + "res= "+result+ "as.length "+as.length + "as(n) "+as(n)+" as(n+1)="+as(n+1))
+      if(n >= as.length -1) result
+      else if(orderedFunction(as(n), as(n+1)))
+        isSortedIter(n+1, true)
+      else
+        false
+    }
+
+    isSortedIter(0,false)
   }
 
 
@@ -110,11 +124,18 @@ object MyModule {
     println("fibo: "+fibo(7))
     println("fiboTailRec: BAD result "+fiboTailRec(7))
 
-    println("::::::::::::::::: Polimorphic Functions  ::::::::::")
+    println("::::::::::::::::: init Polimorphic Functions  ::::::::::")
     println(findFirst( Array("Apple", "Banana", "Orange"), "Orange"))
     println(findFirstPolymor( Array(4, 5, 6),  (x:Int) => x > 5))
 
-    println("::::::::::::::::: Polimorphic Functions  ::::::::::")
+    println("::::::::::::::::: end Polimorphic Functions  ::::::::::")
+
+
+    println("::::::::::::::::: init isSorted Polimorphic  ::::::::::")
+    println(isSorted( Array("Apple", "Banana567", "Orange45"), (x:String, y:String) => x.length < y.length))
+    println(isSorted( Array(4, 6, 7,8,4),  (x:Int, y:Int) => x < y))
+
+    println("::::::::::::::::: end isSorted Polimorphic   ::::::::::")
 
   }
 
