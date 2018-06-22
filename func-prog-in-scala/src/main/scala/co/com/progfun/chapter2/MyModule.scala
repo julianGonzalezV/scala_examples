@@ -132,10 +132,66 @@ object MyModule {
   def f(arr:List[Int]):List[Int] = {
     arr.filter(x => arr.indexOf(x)% 2 != 0)
 
-    /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution
-*/
-
   }
+
+
+
+  /**
+    * :::partial application  --Tema de HOF:::
+    * El nombre es porque la funcion f es aplicada  a algunos y no s todos los argumentos que se necesitan
+    *
+    *
+    * @param a
+    * @param f
+    * @tparam A
+    * @tparam B
+    * @tparam C
+    * @return el resultado es un HOF:  Debe retornar una funcion que de B resuelva a C, esto nos lleva a hacer:
+    *         >1) Un pimer acercamiento o escritura es escribir una funcion que reciba algo de tipo B ((b: B) => ???)
+    *         >2) Que es el ???...R/ es un tipo C...y dentro de la firma de myPartial1 hay algo que me resuelva o
+    *         retorne un C? R/ Siii!  es f!! entonces el right hand side (despúes del =>) de (b:B).. es f que recibe un "a"
+    *         que ya lo tenemos afuera en myPartial1 y un tipo "B" que es precisamente lo que implementamos en 1)
+    *
+    * COMO SE LEE ESTE ENRREDO?
+    * Sí tengo una funcion (en este caso myPartial1) que recibe 2 argumentos(si no lo dude son "a" y "f") el primero de
+    * tipo A y el segundo una función que necesita un Tipo A y B (dos argumentos) para producir un C
+    * Podemos retornar una funcion que que solo necesita B (porque ya nos dieron un A) para devolver un C
+    *
+    */
+  def myPartial1 [A, B, C](a: A, f: (A,B) => C): B => C = {
+    (b: B) => f(a, b)
+  }
+
+
+  /**
+    * CURRYING: Convierte una función f de N argumentos a una funcion de 1 argumento
+    * que parcialmente aplica f
+    *
+    * @param args
+    */
+  def curry [A, B, C](f: (A,B) => C): A => (B =>C) = {
+    (a: A) => (b: B) => f(a, b)
+  }
+
+  // Nota mental: A => (B =>C)  es igual a decir A => B =>C
+
+  def uncurry [A, B, C](f: A => (B =>C) ): (A ,B) => C = {
+    (a: A, b: B) => f(a)(b)
+  }
+
+
+
+
+  /**
+    * FUNCTION COMPOSITION
+    * provee como salida una función para que sea la entrada de otra funcion
+    * @param args
+    */
+  def compose [A, B, C](f: B => C, g: A => B): A => C = {
+    (a: A)  => f(g(a))
+  }
+
+
 
 
   // el main es considerado un procedure o impure function
@@ -167,6 +223,8 @@ object MyModule {
 
     println("::::::::::::::::: end Polimorphic Functions  ::::::::::")
 
+    println("frepetition-->"+fRepetition(4, List(5,7)) )
+    println("frepetition2-->"+fRepetition(4, List(5,7)) )
 
     println("::::::::::::::::: init isSorted Polimorphic  ::::::::::")
     println(isSorted( Array("Apple", "Banana567", "Orange45"), (x:String, y:String) => x.length < y.length))
@@ -174,8 +232,44 @@ object MyModule {
 
     println("::::::::::::::::: end isSorted Polimorphic   ::::::::::")
 
-    println("frepetition-->"+fRepetition(4, List(5,7)) )
-    println("frepetition2-->"+fRepetition(4, List(5,7)) )
+
+    println("::::::::::::::::: Init myPartial1 partial application   ::::::::::")
+
+    val partial1 = myPartial1(3, (x:Int, y: String)=> x == y.length )
+    println( " PartialTrue "+ partial1("ABC") )
+    //acá podría pensarse en una funcion de base de datos que se llame insertar pero que solo se le
+    //pasa el elemento a insertar y el se encarga de abrir y cerrar conexiones a base de datos???? diría qque SI :)
+    println( " PartialFalse "+ partial1("ABCd") )
+
+    println("::::::::::::::::: End myPartial1 partial application  ::::::::::")
+
+    println("::::::::::::::::: Init CURRY   ::::::::::")
+    val myCurry = curry((x:Int, y: String)=> x == y.length )
+    println( myCurry(4) )
+    println( myCurry(4)("ABCD") )
+    println( myCurry(4)("ABC") )
+    println("::::::::::::::::: End CURRY  ::::::::::")
+
+
+    println("::::::::::::::::: Init UNCURRY   ::::::::::")
+    val uncurry1: (Int, String) => Boolean = uncurry((x:Int) => (y: String) => x == y.length )
+    println( uncurry1(4, "ABCD") )
+    println( uncurry1(4, "ABCDe"))
+    println("::::::::::::::::: End UNCURRY  ::::::::::")
+
+
+
+    println("::::::::::::::::: Init COMPOSE   ::::::::::")
+    //Note como con podemos crear una composición de fácil
+
+    val funcion1 = (x:Int) => x.toString
+    val funcion2 = (x: String) => x.length
+    val toStrAndGetLenght  = compose( funcion2, funcion1)
+    println( toStrAndGetLenght(100))
+    println( toStrAndGetLenght(5300))
+
+    println("::::::::::::::::: End COMPOSE  ::::::::::")
+
   }
 
 }
