@@ -59,6 +59,57 @@ object MyModule {
 
   }
 
+  /**
+    * Retorna el primer index en array, donde el valor del index es igual al key dado
+    * Version monomorfica
+    * @param array
+    * @param key
+    * @return
+    */
+  def findFirst(ss: Array[String], key: String): Int ={
+
+    def findIter(n:Int): Int ={
+      if(n >= ss.length)
+        -1
+      else if(ss(n).equals(key))
+        n
+      else
+        findIter(n+1)
+    }
+
+    findIter(0)
+
+  }
+
+
+//Version que acepta cualquier tipo
+  def findFirstPolymor [T] (ss: Array[T], f: T => Boolean): Int = {
+    def findIter(n:Int): Int ={
+      if(n >= ss.length)
+        -1
+      else if(f(ss(n)))
+        n
+      else
+        findIter(n+1)
+    }
+
+    findIter(0)
+  }
+
+
+  def isSorted [A] (as: Array[A], orderedFunction: (A,A) => Boolean): Boolean ={
+    def isSortedIter(n:Int, result: Boolean): Boolean ={
+      //println("n= "+ n + "res= "+result+ "as.length "+as.length + "as(n) "+as(n)+" as(n+1)="+as(n+1))
+      if(n >= as.length -1) result
+      else if(orderedFunction(as(n), as(n+1)))
+        isSortedIter(n+1, true)
+      else
+        false
+    }
+
+    isSortedIter(0,false)
+  }
+
 
   def fRepetition(num:Int,arr:List[Int]):List[Int] ={
     arr.flatMap(x => {
@@ -109,6 +160,19 @@ object MyModule {
 
     println("fibo: "+fibo(7))
     println("fiboTailRec: BAD result "+fiboTailRec(7))
+
+    println("::::::::::::::::: init Polimorphic Functions  ::::::::::")
+    println(findFirst( Array("Apple", "Banana", "Orange"), "Orange"))
+    println(findFirstPolymor( Array(4, 5, 6),  (x:Int) => x > 5))
+
+    println("::::::::::::::::: end Polimorphic Functions  ::::::::::")
+
+
+    println("::::::::::::::::: init isSorted Polimorphic  ::::::::::")
+    println(isSorted( Array("Apple", "Banana567", "Orange45"), (x:String, y:String) => x.length < y.length))
+    println(isSorted( Array(4, 6, 7,8,4),  (x:Int, y:Int) => x < y))
+
+    println("::::::::::::::::: end isSorted Polimorphic   ::::::::::")
 
     println("frepetition-->"+fRepetition(4, List(5,7)) )
     println("frepetition2-->"+fRepetition(4, List(5,7)) )
