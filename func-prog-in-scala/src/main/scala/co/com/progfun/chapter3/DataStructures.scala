@@ -22,6 +22,33 @@ object DataStructures {
       case Cons(head, tail) => head * sum(tail)
     }
 
+    def tail [A](li: List[A]): List[A] = li match {
+      case Nil => Nil
+      case Cons(head, tail) => tail
+    }
+
+    def setHead[A](li: List[A], newVal: A): List[A] = li match {
+      case Nil => Nil
+      //case (0 , _) => 0
+      case Cons(x, xs) =>  Cons(newVal, xs)
+    }
+
+
+    def drop[A](list: List[A], n: Int): List[A] = {
+      if(n<0) list
+      else drop(tail(list), n-1)
+    }
+
+    def dropWhile[A](list: List[A], f: A => Boolean): List[A] = list match {
+      case Nil => Nil
+      case Cons(x, xs) => {
+        if(f(x))
+          dropWhile(tail(xs),f)
+        else
+          dropWhile( Cons(x, xs),f)
+      }
+    }
+
     /**
       * Esta es considerada una variadic function porque puede aceptar cero o más valores
       * @param as
@@ -62,6 +89,13 @@ object DataStructures {
     println("::::::::::::::::: Variadic functions   ::::::::::")
     println(List.apply(1,2,3,4,5))
     println(List.apply("bar", "foo"))
+
+    println("::::::::::::::::: Tail and setHead functions   ::::::::::")
+    println(List.tail(list1))
+    println(List.setHead(List("foo", "bar"), "neo"))
+
+
+    println("::::::::::::::::: Drop and DropWhile functions   ::::::::::")
 
 
   }
