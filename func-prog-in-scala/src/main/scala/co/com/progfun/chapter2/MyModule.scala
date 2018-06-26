@@ -167,6 +167,9 @@ object MyModule {
     * CURRYING: Convierte una función f de N argumentos a una funcion de 1 argumento
     * que parcialmente aplica f
     *
+    * > Se usa como
+    * 1) Type Inference
+    *
     * @param args
     */
   def curry [A, B, C](f: (A,B) => C): A => (B =>C) = {

@@ -46,7 +46,7 @@ object DataStructures {
     /*
             if( f(v1) )
 
-    def dropWhile[A](list: List[A], f: A => Boolean): List[A] =  {
+    def dropWhile1[A](list: List[A], f: A => Boolean): List[A] =  {
 
         def dropWLoop[A](realList: List[A], acc:List[A]):List[A] = realList match {
           case Nil => acc
@@ -61,7 +61,7 @@ object DataStructures {
         dropWLoop(list, Nil)
     }*/
 
-    def dropWhile[A](list: List[A], f: A => Boolean): List[A] =  {
+    def dropWhile2[A](list: List[A], f: A => Boolean): List[A] =  {
 
       def dropWLoop[B](realList: List[B], acc:List[B], f: B => Boolean):List[B] = realList match {
         case Nil => {
@@ -87,6 +87,41 @@ object DataStructures {
       dropWLoop(list, Nil, f)
     }
 
+    //Eliminando loop interno de dropWhile
+
+    def dropWhile[A](list: List[A], f: A => Boolean): List[A] = list match {
+      case Nil => Nil
+      case Cons(x, xs) => {
+        if (f(x)) dropWhile(xs, f)
+        else Cons(x, dropWhile(xs, f))
+      }
+    }
+
+    /**
+      * Curried version:
+      * La firma queda algo así como nameFunction(xs)(f)
+      * que se lee así:
+      * nameFunction(xs) retorna una funcion que luego llamaremos con la funcion f
+      * esto es muy bacano porque elimina el problema de tener que indicar el tipo de dato
+      * cuando le pasamos funcionnes anominas (ver en el main el ejemplo del como es consumuiendo ambos dropWhile)
+      *  Tambien curried lo podemos ver como convertir una función ff(a, b) que recibe 2 argumentos a una f
+      *  que reciba un argumento f(a) y retorne otra funcion de 1 argumento para pasarle el 2do algo así como f(a) => g(?)
+      *  y a g le pasamos b
+      *
+      *  En este caso  scala infiere más facilmente el tipo de izq a derecha y la primera función a la izquirda recibe un listy
+      *  de A al ser por ejemplo de entero lo liga de una
+      * @param list
+      * @param f
+      * @tparam A
+      * @return
+      */
+    def dropWhileCurried[A](list: List[A]) (f: A => Boolean): List[A] = list match {
+      case Nil => Nil
+      case Cons(x, xs) => {
+        if (f(x)) dropWhile(xs, f)
+        else Cons(x, dropWhile(xs, f))
+      }
+    }
 
     /**
       * Esta es considerada una variadic function porque puede aceptar cero o más valores
@@ -105,12 +140,54 @@ object DataStructures {
     }
 
 
+    /**
+      * La clave de que se retorne un Cons(x, init(xs)) es que la recursividad queda deltro del Cons Inicial o de la
+      * primera iteración, el problema que tiene init es que recorre todo a diferencia de append por ejemplo que solo recorre
+      * a1  o drop que solo remueve hasta N elemlentos, o dropWhile que solo remueve mientras f(h) se cumpla
+      * @param li
+      * @tparam A
+      * @return
+      */
     def init[A](li: List[A]): List[A] = li match {
       case Nil  => Nil
       case Cons(x, Nil) => Nil
       case  Cons(h, t) => Cons(h, init(t))
     }
 
+
+    //Generalizando SUM y PRODUCT
+    /**
+      * También es curried para una mejor inferencia de tipos
+      * @param lis
+      * @param z
+      * @param f
+      * @tparam A
+      * @tparam B
+      * @return
+      */
+  def foldRight[A, B] (lis: List[A], z: B)(f: (A, B)=> B) : B = lis match {
+      case Nil => z
+      case Cons(h, t) => f(h, foldRight(t,z)(f))
+    }
+
+    /**
+      * Al colocarle Int a la lista y al enviarla al foldRight en el primer par de parametros el compilador ya
+      * sale inferir el tipo porque está Currificada(for better type inference)
+      * Y si esta función solo suma enteros no sabe sumar otro tipo, tocaría implementar la versión para otros tipos
+      * eje Strings etc
+      * @param lis
+      * @tparam A
+      * @return
+      */
+    def sum2[A](lis: List[Int]) = {
+      foldRight(lis, 0)((x , y ) => (x + y) )
+    }
+
+
+
+    def product2[A](lis: List[Int]) = {
+      foldRight(lis, 1)((x , y ) => (x * y) )
+    }
 
 
   }
@@ -150,8 +227,15 @@ object DataStructures {
 
 
     println("::::::::::::::::: Drop and DropWhile functions   ::::::::::")
-    println(List.drop(list1, 3))
-    println(List.dropWhile(list1, (x: Int) =>  x > 2 ))
+    println(List.drop(List(12,13,14,15,16), 3))
+
+    //borra todos los pares, dejando en la lista los impares :)
+    println(List.dropWhile(List(2,3,4,5,6), (x: Int) =>  x % 2 == 0 ))
+
+    println("::::::::::::::::: DropWhile Cirried functions   ::::::::::")
+
+    println(List.dropWhileCurried(List(2,3,4,5,6)) (x =>  x % 2 == 0 ))
+    println(List.dropWhileCurried(List(2,3,4,5,6)) (x =>  x % 2 == 0 ))
 
     println(":::::::::::::::::append functions   ::::::::::")
     println(List.append(list1,list3))
@@ -159,5 +243,10 @@ object DataStructures {
     println(":::::::::::::::::Init functions   ::::::::::")
     println(List.init(List(3,4,5,6)))
 
+
+    println(":::::::::::::::::Sum2 y Produ2  generalizing to higher-order functions   ::::::::::")
+
+    println(List.sum2(List(3,4,5,6)))
+    println(List.product2(List(3,4,5,6)))
   }
 }
