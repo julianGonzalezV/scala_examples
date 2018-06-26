@@ -158,6 +158,10 @@ object DataStructures {
     //Generalizando SUM y PRODUCT
     /**
       * También es curried para una mejor inferencia de tipos
+      *
+      * Cuál es la idea?
+      * R/ Sacar / Abstraer la operación (f) (en este caso suma y multiplicación, pero pueden cumplir muchas más)
+      * y tambiém se abstrae el valor (z) en caso de ser una lista Vacía
       * @param lis
       * @param z
       * @param f
@@ -166,6 +170,7 @@ object DataStructures {
       * @return
       */
   def foldRight[A, B] (lis: List[A], z: B)(f: (A, B)=> B) : B = lis match {
+      //valor ante un nulo
       case Nil => z
       case Cons(h, t) => f(h, foldRight(t,z)(f))
     }
@@ -189,6 +194,15 @@ object DataStructures {
       foldRight(lis, 1)((x , y ) => (x * y) )
     }
 
+    /*
+    EXERCISE 7: Can product implemented using foldRight immediately
+      halt the recursion and return 0.0 if it encounters a 0.0?
+
+      R/ Me imagino algo así como enviar una funcion de parada x=> x ==0
+      */
+
+
+    def length[A](l:List[A]): Int = ???
 
   }
   def main(args: Array[String]): Unit ={
@@ -248,5 +262,33 @@ object DataStructures {
 
     println(List.sum2(List(3,4,5,6)))
     println(List.product2(List(3,4,5,6)))
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 8   ::::::::::")
+    /*
+     foldRight[A, B] (lis: List[A], z: B)(f: (A, B)=> B) : B
+    Viendo la firma del método, es este caso particuarl
+    Esto quiere decir que al enviarle a foldRight los primeros dos argumentos list:List[Int](inferido)  y z: List[Int]
+    osea que A = Int  y B=  List[Int] entonces la primera parte del curried devuelve una funcion que recibe dos parámetros
+    A Y B y devuelve un List[Int] "(Int, List[Int]) => List[Int]"  por lo cual pasarle Cons(_,_) es completamente válido
+
+    Pues su firma es: (el primero es un valor unico y el segundo es una lista, lo mismo que lo que espera la funcion devuelta
+     por vfl1)
+    Cons[+A] (head:A, tail: List[A])
+
+      Ver exolicación en código
+
+      Finalmente en cada iteraciión arma la lista cons  ej Cons(3,Cons(4,Cons(5,Cons(6,Nil))))
+    */
+
+    val vfl1: ((Int, List[Int]) => List[Int]) => List[Int] = List.foldRight(List(3,4,5,6), Nil: List[Int])
+    val vfl2: List[Int] = List.foldRight(List(3,4,5,6), Nil: List[Int])(Cons(_,_))
+    //note como partimos la funcion fold en vfl y vfl2
+
+    val fold1V = List.foldRight(List(3,4,5,6), Nil: List[Int])(Cons(_,_))
+    println(fold1V)
+
+
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 9   Compute the length of a list using foldRight. ::::::::::")
   }
 }
