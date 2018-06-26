@@ -105,6 +105,13 @@ object DataStructures {
     }
 
 
+    def init[A](li: List[A]): List[A] = li match {
+      case Nil  => Nil
+      case Cons(x, Nil) => Nil
+      case  Cons(h, t) => Cons(h, init(t))
+    }
+
+
 
   }
   def main(args: Array[String]): Unit ={
@@ -148,6 +155,9 @@ object DataStructures {
 
     println(":::::::::::::::::append functions   ::::::::::")
     println(List.append(list1,list3))
+
+    println(":::::::::::::::::Init functions   ::::::::::")
+    println(List.init(List(3,4,5,6)))
 
   }
 }
