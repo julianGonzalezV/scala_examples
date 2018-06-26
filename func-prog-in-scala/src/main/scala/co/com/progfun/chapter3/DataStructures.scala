@@ -27,10 +27,9 @@ object DataStructures {
       case Cons(head, tail) => tail
     }
 
-    def setHead[A](li: List[A], newVal: A): List[A] = li match {
+    def setHead[A](li: List[A], newVal: A): List[A] = newVal match {
       case Nil => Nil
-      //case (0 , _) => 0
-      case Cons(x, xs) =>  Cons(newVal, xs)
+      case x =>  Cons(x, li)
     }
 
 
@@ -39,15 +38,55 @@ object DataStructures {
       else drop(tail(list), n-1)
     }
 
-    def dropWhile[A](list: List[A], f: A => Boolean): List[A] = list match {
-      case Nil => Nil
-      case Cons(x, xs) => {
-        if(f(x))
-          dropWhile(tail(xs),f)
-        else
-          dropWhile( Cons(x, xs),f)
+
+    /*
+    Esta version me saca error de Error:(48, 19) type mismatch;
+ found   : v1.type (with underlying type A)
+ required: A*/
+    /*
+            if( f(v1) )
+
+    def dropWhile[A](list: List[A], f: A => Boolean): List[A] =  {
+
+        def dropWLoop[A](realList: List[A], acc:List[A]):List[A] = realList match {
+          case Nil => acc
+          case Cons(h, t) => {
+            if( f(h) )
+              dropWLoop(tail(t), acc)
+            else
+              dropWLoop(tail(t), setHead(acc, h))
+          }
+        }
+
+        dropWLoop(list, Nil)
+    }*/
+
+    def dropWhile[A](list: List[A], f: A => Boolean): List[A] =  {
+
+      def dropWLoop[B](realList: List[B], acc:List[B], f: B => Boolean):List[B] = realList match {
+        case Nil => {
+          println("Case 1: "+realList)
+          acc
+        }
+        case Cons(h, t) => {
+          if( f(h)){
+            println("If : "+realList+ " acc "+acc)
+
+            dropWLoop(t, acc, f)
+          }
+          else{
+            println("else : "+realList+ " acc "+acc)
+
+            //dropWLoop(t, Cons(h, acc), f)
+            Cons(h, dropWLoop(t,acc,f))
+          }
+
+        }
       }
+
+      dropWLoop(list, Nil, f)
     }
+
 
     /**
       * Esta es considerada una variadic function porque puede aceptar cero o más valores
@@ -60,11 +99,19 @@ object DataStructures {
       else Cons(as.head, apply(as.tail: _*))
 
 
+    def append[A](a1: List[A], a2: List[A]): List[A] = a1 match {
+      case Nil  => a2
+      case  Cons(h, t) => Cons(h, append(t, a2))
+    }
+
+
+
   }
   def main(args: Array[String]): Unit ={
 
     val list1 = List(1,2,3,4,5)
     val list2 = List(3,4,5,6)
+    val list3 = List(11,12,13)
 
     println("::::::::::::::::: List Sum    ::::::::::")
     println(List.sum(list1))
@@ -96,7 +143,11 @@ object DataStructures {
 
 
     println("::::::::::::::::: Drop and DropWhile functions   ::::::::::")
+    println(List.drop(list1, 3))
+    println(List.dropWhile(list1, (x: Int) =>  x > 2 ))
 
+    println(":::::::::::::::::append functions   ::::::::::")
+    println(List.append(list1,list3))
 
   }
 }
