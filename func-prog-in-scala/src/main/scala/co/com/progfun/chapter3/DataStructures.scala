@@ -202,7 +202,27 @@ object DataStructures {
       */
 
 
-    def length[A](l:List[A]): Int = ???
+
+    //EXERCISE 9
+
+    def length[A](l:List[A]): Int =  {
+        /* aso sería la implementacion sin usar foldr:
+
+      case Nil  => 0
+      case Cons(h, t) => 1 + length(t)
+
+      Note como usando foldRight se le pasa la lista de tip A y un Int (el cero)
+      por lo cual por curried entonces la segunda funcition es (A, Int) => ???
+      en donde para ??? me pregunto debo trabajar con el A o con el Int R/ Con el Int ...
+      y que debo hacer con el Int R/ Incrementarlo!
+      Acá descubri que el B de  la  f:(A, B)=> B del foldRight es el ACUMULADOR
+      QUIEN AÑ FINAL SE RETORNA!
+      */
+
+      foldRight(l, 0)((x, y) => 1 + y)
+
+    }
+
 
   }
   def main(args: Array[String]): Unit ={
@@ -290,5 +310,7 @@ object DataStructures {
 
 
     println("::::::::::::::::: Chapter 3  EXERCISE 9   Compute the length of a list using foldRight. ::::::::::")
+    println(List.length(List(3,4,5,6, 5, 5)))
+
   }
 }
