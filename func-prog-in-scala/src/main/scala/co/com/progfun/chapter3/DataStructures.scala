@@ -1,6 +1,9 @@
 package co.com.progfun.chapter3
 
+import java.text.SimpleDateFormat
 import java.util.Calendar
+
+import scala.collection.immutable
 
 object DataStructures {
 
@@ -204,25 +207,25 @@ object DataStructures {
       * @tparam A
       * @return
       */
-    def sum2[A](lis: List[Int]) = {
-      foldRight(lis, 0)((x , y ) => (x + y) )
+    def sum2[A](lis: List[BigInt]) = {
+      foldRight(lis, BigInt.apply(0))((x , y ) => (x + y) )
     }
 
 
 
-    def product2[A](lis: List[Int]) = {
-      foldRight(lis, 1)((x , y ) => (x * y) )
+    def product2[A](lis: List[BigInt]) = {
+      foldRight(lis, BigInt.apply(1))((x , y ) => (x * y) )
     }
 
 
-    def sumFl[A](lis: List[Int]) = {
-      foldLeft(lis, 0)((x , y ) => (x + y) )
+    def sumFl[A](lis: List[BigInt]) = {
+      foldLeft(lis, BigInt.apply(0))((x , y ) => (x.+(y)) )
     }
 
 
 
-    def productFl[A](lis: List[Int]) = {
-      foldLeft(lis, 1)((x , y ) => (x * y) )
+    def productFl[A](lis: List[BigInt]) = {
+      foldLeft(lis, BigInt.apply(1))((x , y ) => (x * y) )
     }
 
     /*
@@ -285,6 +288,7 @@ object DataStructures {
 
 
     println("::::::::::::::::: Variadic functions   ::::::::::")
+
     println(List.apply(1,2,3,4,5))
     println(List.apply("bar", "foo"))
 
@@ -313,11 +317,19 @@ object DataStructures {
 
     println(":::::::::::::::::Sum2 y Produ2  generalizing to higher-order functions   ::::::::::")
     //val longList = (1 to 6).map(x => Cons(x, Nil) )
+    val fullDateF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    println(fullDateF.format(Calendar.getInstance().getTime()))
+    //Note que la solucion basada en foldRight NO es segura porque aveces se desborda la memoria
+    //mientras con left no sucede, SOLO BASTA con que pruebe cambiando de 20 a 20000 en cada uno right and left
+    //primero ejecutando las líneas 325 y 326 y va a notar que se revienta. con foldLeft no pasa ...:O
+    //porque es tail safe o tailr recursive
+    val largeDataSet1 = (2 to 20).map(x => List.apply(BigInt(x))).reduce((x,y)=> List.append(x,y))
+    val sumFLResult1:BigInt = List.sum2(largeDataSet1)
+    val prFLResult1:BigInt = List.product2(largeDataSet1)
 
-    println("Init"+  Calendar.getInstance().getTime())
-    println(List.sum2(List(3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6)))
-    println(List.product2(List(3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6)))
-    println("end"+  Calendar.getInstance().getTime())
+    println(sumFLResult1)
+    println(prFLResult1)
+    println(fullDateF.format(Calendar.getInstance().getTime()))
 
     println("::::::::::::::::: Chapter 3  EXERCISE 8   ::::::::::")
     /*
@@ -351,9 +363,12 @@ object DataStructures {
 
     //    def foldLeft[A, B] (as: List[A], z: B)(f: (B, A)=> B) : B
     println("::::::::::::::::: Chapter 3  EXERCISE 10 - 11   Implementing foldLeft. ::::::::::")
-    println("Init"+ Calendar.getInstance().getTime())
-    println(List.sumFl(List(3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6)))
-    println(List.productFl(List(3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6)))
-    println("End"+  Calendar.getInstance().getTime())
+    println(fullDateF.format(Calendar.getInstance().getTime()))
+    val largeDataSet = (2 to 20000).map(x => List.apply(BigInt(x))).reduce((x,y)=> List.append(x,y))
+    val sumFLResult:BigInt = List.sumFl(largeDataSet)
+    val prFLResult:BigInt = List.productFl(largeDataSet)
+    println(sumFLResult)
+    println(prFLResult)
+    println(fullDateF.format(Calendar.getInstance().getTime()))
   }
 }
