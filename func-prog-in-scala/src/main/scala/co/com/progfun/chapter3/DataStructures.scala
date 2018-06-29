@@ -1,5 +1,7 @@
 package co.com.progfun.chapter3
 
+import java.util.Calendar
+
 object DataStructures {
 
   //trait(abstract interface ) es bueno para definir tipos de dstos como lo es este caso
@@ -175,6 +177,24 @@ object DataStructures {
       case Cons(h, t) => f(h, foldRight(t,z)(f))
     }
 
+
+    /**
+      * foldLeft es una version de foldRight pero tail recursive or tail safe
+      * debido a que lo ultimo que se llama es a la funcion misms y no como en foldRight
+      * que sale llamando a f , note en el main como se nota la diferencia de performance
+      * foldLeft vs foldRight
+      * @param as
+      * @param z
+      * @param f
+      * @tparam A
+      * @tparam B
+      * @return
+      */
+    def foldLeft[A, B] (as: List[A], z: B)(f: (B, A)=> B) : B = as match {
+      case Nil => z
+      case Cons(h, t) => foldLeft(t, f(z,h)) (f)
+    }
+
     /**
       * Al colocarle Int a la lista y al enviarla al foldRight en el primer par de parametros el compilador ya
       * sale inferir el tipo porque está Currificada(for better type inference)
@@ -192,6 +212,17 @@ object DataStructures {
 
     def product2[A](lis: List[Int]) = {
       foldRight(lis, 1)((x , y ) => (x * y) )
+    }
+
+
+    def sumFl[A](lis: List[Int]) = {
+      foldLeft(lis, 0)((x , y ) => (x + y) )
+    }
+
+
+
+    def productFl[A](lis: List[Int]) = {
+      foldLeft(lis, 1)((x , y ) => (x * y) )
     }
 
     /*
@@ -222,6 +253,8 @@ object DataStructures {
       foldRight(l, 0)((x, y) => 1 + y)
 
     }
+
+
 
 
   }
@@ -279,9 +312,12 @@ object DataStructures {
 
 
     println(":::::::::::::::::Sum2 y Produ2  generalizing to higher-order functions   ::::::::::")
+    //val longList = (1 to 6).map(x => Cons(x, Nil) )
 
-    println(List.sum2(List(3,4,5,6)))
-    println(List.product2(List(3,4,5,6)))
+    println("Init"+  Calendar.getInstance().getTime())
+    println(List.sum2(List(3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6)))
+    println(List.product2(List(3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6)))
+    println("end"+  Calendar.getInstance().getTime())
 
     println("::::::::::::::::: Chapter 3  EXERCISE 8   ::::::::::")
     /*
@@ -312,5 +348,12 @@ object DataStructures {
     println("::::::::::::::::: Chapter 3  EXERCISE 9   Compute the length of a list using foldRight. ::::::::::")
     println(List.length(List(3,4,5,6, 5, 5)))
 
+
+    //    def foldLeft[A, B] (as: List[A], z: B)(f: (B, A)=> B) : B
+    println("::::::::::::::::: Chapter 3  EXERCISE 10 - 11   Implementing foldLeft. ::::::::::")
+    println("Init"+ Calendar.getInstance().getTime())
+    println(List.sumFl(List(3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6)))
+    println(List.productFl(List(3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6,3,4,5,6)))
+    println("End"+  Calendar.getInstance().getTime())
   }
 }
