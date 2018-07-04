@@ -33,7 +33,7 @@ object DataStructures {
     }
 
     def setHead[A](li: List[A], newVal: A): List[A] = newVal match {
-      case Nil => Nil
+      case Nil => li
       case x =>  Cons(x, li)
     }
 
@@ -144,6 +144,39 @@ object DataStructures {
       case  Cons(h, t) => Cons(h, append(t, a2))
     }
 
+    //def foldLeft[A, B] (as: List[A], z: B)(f: (B, A)=> B) : B
+    /**
+      * Esta version deveolve el append pero la primera que se concatena sale en el orden contrario
+      * -Una opcion es que antes se le aplique a a1 un reverse que ya lo tenemos
+      *
+      * @param a1
+      * @param a2
+      * @tparam A
+      * @return
+      */
+    def appendFoldL[A](a1: List[A], a2: List[A]): List[A] = {
+      foldLeft(List.reverse(a1), a2)((acc,item)=> Cons(item, acc) )
+    }
+
+
+    /**
+      * Esta version no es optima porque no es lineal sino que es exponencial
+      * No se podría llamar foldLeft de appendFoldL
+      * V1 foldLeft(a1, Nil: List[A])((acc,item) => appendFoldL(acc, item))
+      * se me corre que no se llame foldLeft sino que se haga llamado de singleList con tail y se valla concatenando
+      * V2
+      * @param a1
+      * @tparam A
+      * @return
+      */
+    def singleList[A](a1: List[List[A]]): List[A] = {
+      def singleListLoop[B](a1: List[List[B]], acc:List[B] ): List[B] =  a1 match {
+        case Nil =>  acc
+        case Cons(x:List[B] , xs: List[List[B]]) =>    singleListLoop(xs, appendFoldL(acc, x))
+      }
+      singleListLoop(a1, Nil)
+    }
+
 
     /**
       * La clave de que se retorne un Cons(x, init(xs)) es que la recursividad queda deltro del Cons Inicial o de la
@@ -182,12 +215,13 @@ object DataStructures {
 
 
     /**
-      * foldLeft es una version de foldRight pero tail recursive or tail safe
+      * foldLeft es una version de foldRight a diferencia QUE ESTA ES tail recursive or tail safe
       * debido a que lo ultimo que se llama es a la funcion misms y no como en foldRight
-      * que sale llamando a f , note en el main como se nota la diferencia de performance
+      * que sale llamando a f , note en el main como se nota la diferencia de CONSUMO DE MEMORIA
       * foldLeft vs foldRight
       * @param as
-      * @param z
+      * @param z : tHE ZERO VALUE or basic/neutral val, note that in foldleft this parameter is an
+      *          accumulator at the same time that the inital value
       * @param f
       * @tparam A
       * @tparam B
@@ -197,6 +231,19 @@ object DataStructures {
       case Nil => z
       case Cons(h, t) => foldLeft(t, f(z,h)) (f)
     }
+
+
+    /* Complicado de hacer
+    def foldLeftIntermsOfFoldRight[A, B] (as: List[A], z: B)(f: (B, A)=> B) : B = as match{
+      case Nil => z
+      case Cons(h, t) => foldLeft(t, foldRight(t, z) ((x:A,y: B)=> f(x,y))) (f)
+
+
+    }*/
+
+
+
+
 
     /**
       * Al colocarle Int a la lista y al enviarla al foldRight en el primer par de parametros el compilador ya
@@ -208,7 +255,7 @@ object DataStructures {
       * @return
       */
     def sum2[A](lis: List[BigInt]) = {
-      foldRight(lis, BigInt.apply(0))((x , y ) => (x + y) )
+      foldRight(lis, BigInt.apply(0))((x , y ) =>  (x + y) )
     }
 
 
@@ -221,6 +268,12 @@ object DataStructures {
     def sumFl[A](lis: List[BigInt]) = {
       foldLeft(lis, BigInt.apply(0))((x , y ) => (x.+(y)) )
     }
+
+
+    /*
+    def sumFl2FoldRight[A](lis: List[BigInt]) = {
+      foldLeftIntermsOfFoldRight(lis, BigInt.apply(0))((x , y ) => (x.+(y)) )
+    }*/
 
 
 
@@ -257,14 +310,41 @@ object DataStructures {
 
     }
 
+    /**
+      *
+      * @param lis
+      * @tparam A
+      * @return
+      */
+    def reverse[A](lis: List[A]): List[A] = {
+      foldLeft(lis, Nil: List[A])((x , y ) =>   Cons(y,x) )
+    }
+
+
+    /**
+      * Exercise 16 : Transforming a list, returning new one, in order to write a pure function
+      * @param lis
+      * @param f
+      * @tparam A
+      * @return
+      */
+    def transformL[A](lis: List[A], f: A => A ): List[A] =  {
+      def loop[A](lisIn: List[A], acc: List[A], f: A => A ): List[A] = lisIn match {
+        case Nil => acc
+        case Cons(x, xs) => loop(xs, Cons(f(x), acc), f)
+      }
+      loop(lis, Nil, f)
+    }
+
+
 
 
 
   }
   def main(args: Array[String]): Unit ={
 
-    val list1 = List(1,2,3,4,5)
-    val list2 = List(3,4,5,6)
+    val list1 = List(1,2,3)
+    val list2 = List(4,5,6)
     val list3 = List(11,12,13)
 
     println("::::::::::::::::: List Sum    ::::::::::")
@@ -364,11 +444,35 @@ object DataStructures {
     //    def foldLeft[A, B] (as: List[A], z: B)(f: (B, A)=> B) : B
     println("::::::::::::::::: Chapter 3  EXERCISE 10 - 11   Implementing foldLeft. ::::::::::")
     println(fullDateF.format(Calendar.getInstance().getTime()))
-    val largeDataSet = (2 to 20000).map(x => List.apply(BigInt(x))).reduce((x,y)=> List.append(x,y))
+    val largeDataSet = (2 to 200).map(x => List.apply(BigInt(x))).reduce((x,y)=> List.append(x,y))
     val sumFLResult:BigInt = List.sumFl(largeDataSet)
     val prFLResult:BigInt = List.productFl(largeDataSet)
     println(sumFLResult)
     println(prFLResult)
     println(fullDateF.format(Calendar.getInstance().getTime()))
+
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 12   reverser. ::::::::::")
+    println(List.reverse(List(3,4,5,6, 7, 8)))
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 13   foldLeftIntermsOfFoldRight. ::::::::::")
+
+    //List.sumFl2FoldRight(List(1,2,3))
+
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 14   appendFold. ::::::::::")
+    val largeDataSetAFl = (2 to 20).map(x => List.apply(BigInt(x))).reduce((x,y)=> List.append(x,y))
+    println(list3)
+    println(List.appendFoldL(largeDataSetAFl,list3))
+
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 15   appendFold. ::::::::::")
+    println(List.singleList(List(list1,list2, list3)))
+
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 16   Transform. ::::::::::")
+    println(list1)
+    println(List.transformL(list1, (x:Int) => x+1 ))
+
   }
 }
