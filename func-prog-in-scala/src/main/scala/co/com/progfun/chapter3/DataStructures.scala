@@ -337,11 +337,20 @@ object DataStructures {
     }
 
 
-
-    def map[A, B](lis: List[A], f: A => List[B] ): List[B] =  {
+    /**
+      *
+      * Given flatMap(List(1,2,3) (x => Lis(x, x))) debe retornar List(1,1,2,2,3,3)
+      * @param lis
+      * @param f :  La funcion dada debe retornar una lista en lugar de un solo valor, como sucede con map
+      *          la lista resultante de f debe ser insertada a la lista de salida (el acc en este caso)
+      * @tparam A
+      * @tparam B
+      * @return
+      */
+    def flatMap[A, B](lis: List[A], f: A => List[B] ): List[B] =  {
       def loop[A, B](lisIn: List[A], acc: List[B], f: A => List[B] ): List[B] = lisIn match {
         case Nil => acc
-        case Cons(x, xs) => loop(xs, Cons(f(x), acc), f)
+        case Cons(x, xs) =>  loop(xs, appendFoldL(acc, f(x) ), f)
       }
       loop(lis, Nil, f)
     }
@@ -501,5 +510,9 @@ object DataStructures {
     println("::::::::::::::::: Chapter 3  EXERCISE 19   Filter. ::::::::::")
     println(List.filter(List(3.4, 5.8, 6.0)) (x => x > 5 ))
     println(List.filter(List(1,2,3,4,5,6,7,8,9)) (x => x % 2 == 0 ))
+
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 20   flatMap. ::::::::::")
+    println(List.flatMap(List(1,2,3), ((x: Int) => List(x, x))))
   }
 }

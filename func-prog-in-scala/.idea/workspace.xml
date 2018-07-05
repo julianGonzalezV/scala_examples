@@ -42,8 +42,8 @@
       <file leaf-file-name="DataStructures.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/co/com/progfun/chapter3/DataStructures.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="341" column="66" lean-forward="false" selection-start-line="341" selection-start-column="66" selection-end-line="341" selection-end-column="66" />
+            <state relative-caret-position="235">
+              <caret line="333" column="39" lean-forward="true" selection-start-line="333" selection-start-column="39" selection-end-line="333" selection-end-column="39" />
               <folding>
                 <element signature="e#33#66#0" expanded="true" />
               </folding>
@@ -448,7 +448,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32618025" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32618025" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -859,8 +859,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/co/com/progfun/chapter3/DataStructures.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="341" column="66" lean-forward="false" selection-start-line="341" selection-start-column="66" selection-end-line="341" selection-end-column="66" />
+        <state relative-caret-position="235">
+          <caret line="333" column="39" lean-forward="true" selection-start-line="333" selection-start-column="39" selection-end-line="333" selection-end-column="39" />
           <folding>
             <element signature="e#33#66#0" expanded="true" />
           </folding>
