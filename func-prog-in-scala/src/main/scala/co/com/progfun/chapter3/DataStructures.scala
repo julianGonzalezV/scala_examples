@@ -123,8 +123,8 @@ object DataStructures {
     def dropWhileCurried[A](list: List[A]) (f: A => Boolean): List[A] = list match {
       case Nil => Nil
       case Cons(x, xs) => {
-        if (f(x)) dropWhile(xs, f)
-        else Cons(x, dropWhile(xs, f))
+        if (f(x)) dropWhileCurried(xs)(f)
+        else Cons(x, dropWhileCurried(xs)( f))
       }
     }
 
@@ -328,13 +328,35 @@ object DataStructures {
       * @tparam A
       * @return
       */
-    def transformL[A](lis: List[A], f: A => A ): List[A] =  {
-      def loop[A](lisIn: List[A], acc: List[A], f: A => A ): List[A] = lisIn match {
+    def map[A, B](lis: List[A], f: A => B ): List[B] =  {
+      def loop[A, B](lisIn: List[A], acc: List[B], f: A => B ): List[B] = lisIn match {
         case Nil => acc
         case Cons(x, xs) => loop(xs, Cons(f(x), acc), f)
       }
       loop(lis, Nil, f)
     }
+
+
+
+    def map[A, B](lis: List[A], f: A => List[B] ): List[B] =  {
+      def loop[A, B](lisIn: List[A], acc: List[B], f: A => List[B] ): List[B] = lisIn match {
+        case Nil => acc
+        case Cons(x, xs) => loop(xs, Cons(f(x), acc), f)
+      }
+      loop(lis, Nil, f)
+    }
+
+
+
+    def filter[A](as: List[A])(f: A => Boolean): List[A] = as match {
+      case Nil => Nil
+      case Cons(x, xs) => {
+        if (f(x))  Cons(x, filter(xs)( f))
+        else filter(xs)(f)
+      }
+
+    }
+
 
 
 
@@ -470,9 +492,14 @@ object DataStructures {
     println(List.singleList(List(list1,list2, list3)))
 
 
-    println("::::::::::::::::: Chapter 3  EXERCISE 16   Transform. ::::::::::")
-    println(list1)
-    println(List.transformL(list1, (x:Int) => x+1 ))
+    println("::::::::::::::::: Chapter 3  EXERCISE 16   Transform. (luego cambió a map para ir entendiendo el concepto) ::::::::::")
+    println(List.map(list1, (x: Int) => x + 1))
 
+    println("::::::::::::::::: Chapter 3  EXERCISE 17 y 18   Map. ::::::::::")
+    println(List.map(List(3.4, 5.8, 6.0), (x: Double) => x.toString ))
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 19   Filter. ::::::::::")
+    println(List.filter(List(3.4, 5.8, 6.0)) (x => x > 5 ))
+    println(List.filter(List(1,2,3,4,5,6,7,8,9)) (x => x % 2 == 0 ))
   }
 }
