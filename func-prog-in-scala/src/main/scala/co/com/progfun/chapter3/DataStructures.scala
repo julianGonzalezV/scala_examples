@@ -366,8 +366,29 @@ object DataStructures {
 
     }
 
+    /**
+      * Use flatMap to implement filter
+      * @param as
+      * @param f
+      * @tparam A
+      * @return
+      */
+    def filterFlatMap[A](as: List[A])(f: A => Boolean): List[A] = ???
 
 
+
+    def zipWith[A](a1: List[A], a2: List[A])(f: (A,A) => A): List[A] =  {
+      def loop[A](l1: List[A], l2: List[A], acc:List[A] ) (f: (A,A) => A): List[A] = l1 match {
+        case Nil => acc
+        case Cons(x, xs) =>  l2 match {
+          case Nil => acc
+          case Cons(y, ys)  =>  loop(xs, ys, Cons(f(x,y), acc))(f)
+        }
+      }
+
+      loop(a1, a2, Nil)(f)
+
+    }
 
 
 
@@ -514,5 +535,13 @@ object DataStructures {
 
     println("::::::::::::::::: Chapter 3  EXERCISE 20   flatMap. ::::::::::")
     println(List.flatMap(List(1,2,3), ((x: Int) => List(x, x))))
+
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 21   FilterflatMap. ::::::::::")
+
+
+    println("::::::::::::::::: Chapter 3  EXERCISE 22 y 23   zipWith. ::::::::::")
+    val result = List.zipWith(List(1,2,3), List(4,5,6))((x,y)=> x + y)
+    println(result)
   }
 }
