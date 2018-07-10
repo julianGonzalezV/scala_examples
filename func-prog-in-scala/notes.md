@@ -11,3 +11,8 @@ Objects son conocidos también como el namespace para acceder a los miembros que
 
 Polymorphic functions::
 Funciones que aplican a cualquier tipo de dato, por ejemplo no solo Int sino algo general.
+
+
+
+Scala doc:
+https://docs.scala-lang.org/tour/traits.html
