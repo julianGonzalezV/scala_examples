@@ -1,0 +1,109 @@
+
+
+Una lista entonces es un functor? en lo que leí dice que si 
+
+
+QUE ES LO QUE INDICA QUE SEA FUNCTOR , LA FUNCIÓN MAP? QUE AL APLICARLA ME DEVUELVE AL MISMO CONTEXTO?
+
+Lo que quiero entender es el concepto , lista es map porque tiene su funcion map , que me lleva de un lista a otro list 
+def map[B](f: (A) ? B): List[B]
+
+Puedo ir de Lis(Int) a List(String) con el map
+
+Tengo esta nota : cuando uso map estoy utilizando la capacidad de functor. entonces List es un functor, map es el que indica que sea functor?
+
+
+
+Estudiar TEORÍA DE CATEGORÍAS PARA ENTENDER UN POCO MEJOR LO DE PROG FUNCIONAL.
+
+
+
+
+Monadas:
+
+Un Monad es una construcción de tipo que envuelve un tipo de dato y define una forma de combinarse con otras operaciones. 
+Podemos decir que un Monad es un Functor que además de mapear, define la forma de combinar operaciones y de envolver en él tipos de datos simples.
+
+Ejemplos de mónadas son Option, Future, Try.
+
+Option:  Evita largas líneas de revisión a ver si una variable es null o no. se usa precisamente para “envolver” datos que pueden o no existir, 
+dándole un tipo definido al resultado que se tiene que regresar, 
+y proporcionando una forma simple de evaluar si un resultado fue satisfactorio o no
+
+
+
+
+
+:::::::::::::::::::::::
+en functores el dato al que le VOY A APLICAR LA FUNCION ES LA QUE ESTÁ ENVUELTA EN UN CONTEXTO
+
+Applicative Functor
+
+
+eN Applicative tanto el dato como la función están en el mismo cotexto o diferente.
+
+Applicatives apply a wrapped function to a wrapped value:
+
+
+Las monadas frenan el procesamiento al existir un error ejemplo f1+none+f3 = none , la respuesta obvio es none pero f3 no se alcanza a ejecutar.
+
+
+Por ejemplo 
+ 
+
+
+ 
+ 
+ 
+ 
+ mEETUP:
+ 
+ 
+ aPPLICATIVE 
+ 
+ si aplicaba }}
+ Depender del contexto es depender del proceso anterior 
+ 
+ 
+ 
+ castillobgr/applicative
+ 
+ traverse: Invierte los contextos, hace el tortugas
+
+ 
+ sequence para que funcione debe ser una lista de F donde F es un functor.
+ 
+ 
+ 
+ eL EJEMPLO DE APP2 ES NUY bacano porque recibe los parámetros pelados sin ningun efecto:
+ 
+ y hay dos valores emmbarrados con valores mnádicos Futuros.
+ entpnces lo asombroso está en que tomo esos 2 futuros y los puedo aplicar 
+ 
+ el que al final se queda con el efecto es el resultado 
+ 
+ Uno al inicio podría hacer que la función suma recibiera dos Futuros cada uno envolviendo un entero o pero hacer await en cada uno :( :( :(
+ 
+ 
+ 
+ flatMap es de monada, 
+ 
+ 
+ con aplicatiove las operaciones se evaluan secuencialmente independientemente
+ 
+ 
+ 
+ 
+ CASO DEL DIA A DIA DE PROGRAMACION:
+ 
+ Si tengo: 
+ F[G[]] 
+ 
+ 
+ como llego a:
+ G[F[]]
+ 
+ 
+ para ello es lo de traverse y sequence:
+ 
+ 

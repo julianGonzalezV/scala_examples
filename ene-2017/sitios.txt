@@ -1,0 +1,3 @@
+http://slick.lightbend.com/doc/3.0.0/queries.html
+
+http://slick.lightbend.com/doc/3.0.0/sql-to-slick.html

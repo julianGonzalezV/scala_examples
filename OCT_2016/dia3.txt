@@ -1,0 +1,201 @@
+28-09-2016
+
+Ayer
+
+Imperativo
+OnSuccess(se relaciona com el map)
+OnFailure (con recover)
+OnCOmplete  con nadie
+
+
+Funcional
+map
+flatMap
+recover
+recoverWith (flateen al resultado )
+
+
+Lis hilos son del sistema operativo 
+NO DE LOS LENGUAJES OPERATIVOS NI DE LA MAQ VIRTUAL 
+
+
+LOS HILOS del sistema operativo tienen un límite, son finitos.
+
+Matin Thomson : Back Pressure
+En arquitectura de software:
+Se debe implementar en sist concurrentes (varias fuentes llegando a uno o un conjunto de recursos)
+
+Analogía: Expo de arte, concierto etc se llena. por ende límite.
+-Fila
+-Que no entre 
+
+6mil personas
+
+Sin presionar a los que estan adentro.
+
+1-Fila : Se aburre, se tiene que quedar. Falsa esperanza
+2- Vayase porque hay muchos ud verá si vuelve, no espera.  Fallo rápido Faste Faste..respuesta rápida.
+		Es lo que se conoce como back Pressure
+		
+si su app etc no tiene presión contraria entonces se le debe implementar 
+	Ejemplo servicio de asistencia
+			ENTONCES HAY QUE PONERLE ALGO EN LA MITAD PARA QUE LO HAGA (ARQUITECTURA)
+			A NIVEL DE SDISEÑO TAMBIÉN 
+			
+
+cONJUNTO DE HILOS : Ejemplo que unos se demora
+
+Execution Context: Es como la bolsa en donde está  
+Implicito: Que no tiene que pasarlo como parámetro(No explicitos pero tienen que estar definidos en alguna parte del contexto).
+Implicitos: Muy peligrosos
+
+Cuando se importa el global  el futuro va y mira que contextos tienen 
+
+Execution contex en scala ------LEER!!!!!!
+JAVA CONCURRENCY IN PRACTICE-----LEER!!!
+
+
+cada QUE NECESITEMOS USAR FUTUROS ENTONCES DISEÑAR BIEN LOS Execution CONTEXT PARA QUE SE TOMEN LOS HILOS DE ALLÍ NO AFECTE LOS DEMAS 
+DEL SISTEMA OPERATIVO.
+
+
+
+cOMO DETERMINA EL TAMAÑO CORECTO DEL POOL
+DEPENDE DE LA LATENCIA Y LA CONCURRENCIA.
+
+mUCHos : Sistema lento 
+pocos: 
+
+Solo se logra tuneando en pdn.
+
+
+Eso es lo que se logra con Jistrics (ver en internet)
+
+
+MECANICA : MAP , FLAMAP ETC
+OTRA FALTANTE: EXECUTION CONTEXT (COMO PARTICIONO LO POOLS DE RECURSOS)
+
+
+
+eJEMPLO Un pool de hilos para tarifas y otro Pool de hilos para manejo de recoveries 
+SI LA LOGICA DE NEGOCIO LO EXIGE
+
+SI hay 100 peticiones de tarifas y falla la 500 entonces entonces mando ese tratado de error a otro poll ( el de recovery)
+y en el pool o contex sigo con los 
+
+RECORDAR RECOVERWITH: Asincrono
+
+
+
+--***************************Valor que puede existir o no
+Option: -Some[x] X puede ser un Int MyCaseClass
+		-None
+		
+	
+val op1 = Option(1) //Option[Int] o Some[Int]
+
+op1.map(x=> algo) //evalua a un Option[algo] algo es lo que evalue el lambda
+
+op1.map(x=> "A") //evalua a un Option[algo]
+
+val n = None //Type es igual a None...todos los morfismo sobre None es none
+
+se puede hacer n.map(x=> "A") // Option[A]
+n.flatmap(x=> "A") 
+
+
+
+Si tengo un valor en un cotexto NO SACAR (EMPELOTAR EN VALOR) sino que ingresar 
+a ese contexto y verificarlo HASTA AHORA DOS MORFISMOS MAP Y FLATMAP
+
+no tiene porque estar preguntando sin no vienen valor si null etc lo que haciamos en java :)
+
+
+LO REALMENTE POTENTE DE FLATMAP ES EL ENCADENADO DE COMPUTO 
+
+UN SOLO FLATMAP NO AGREGA VALOR EMPIEZA A VALER CON VARIOS ! y al usar varios 	ENTONCES usar el forComprehension
+
+
+UNA MONADA ES UN FUNCTOR TAMBIEN 
+Functor 
+App Functor
+Monada: que permite encadenar computo  (una modana es un Ap Functor y por ende es un Functor)
+	No siempre lo tengo que usar.
+	
+
+varios flatMap 
+
+Monada : Monoide igualdad ( de Option a Option)
+
+ 
+Option: --FIlter
+EL argumento de usarlo no es la cantidad de líneas de cód
+está en la evaluacion de la expresion y en lo que me entrega QUE DESPUÉS PUEDO OPERAR.
+
+
+ESTUDIAR tony morris  scala option cheat sheet.
+ No es un null seguro 
+ 
+
+
+
+Try:
+Try es un   que evalua un exito o fracaso
+Valores: Success[T] //patron funcional NO ES MONADICO PORQUE LA SOCIATIVIDAD POR PA IZQ NO SE CUMPLE
+		 Failure.
+		 
+el try transforma el valor de adentro y 
+
+
+
+Complejidad del sw no está en lo técnico sino 
+
+
+DDD : Domain Driven Design   (hidden, written)
+
+Eric Evans 2003
+
+Dijo que los programmers piensan erróneamente y el producto paila
+
+Abordó el problema en dos partes 
+
+---Estratégico
+---Táctico
+
+Pregunta:
+Desde los diferentes negocios que es una poliza?
+R/(todos saben cosas dftes y responderán).
+
+Modelo canónico: Coger todas las repsuestas y unificarlas como un todo
+
+Por lo cual en lo --Estrategico(arriba) se llama Bounded Context(establecer fronteras)
+Que le ayuda a uno a identificar un bounded context?
+R/ Usar el lenguaje obicuo: (obicuo, que está en todas partes): El lenguaje obicuo es lo que me define un bounded context
+En lo técnico lo que se hace es definir el lenguaje obicuo con OOP+fp case class , con funciones 
+para formar un MS (micro servicio)
+
+
+--Táctico : Como organizo lo de case Class + funcional
+
+Recomendado 3 libros, en el siguiente orden:
+1-DDD Distilled vaughn verman
+2- Impelementing domain driven design : vaughn verman --Este es más practico  (implementado en java)
+2-  Domain driven design tackling complexity eric evans
+
+
+Para diseño en scala sería el primero para leer:
+1-Programming in scala (manual del lenguaje)
+2-Functional programing in scala  paul chusano
+3-Functoinal and reactive domain modeling  Debassh Ghosh
+
+
+
+
+
+
+ 
+
+
+
+
+

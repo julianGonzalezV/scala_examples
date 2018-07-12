@@ -1,0 +1,13 @@
+Muy enrredado de sí nos toca realizar un join entonces como se muestra el json sale error
+
+
+Yo quice ponerme a ensayar con collections pero es mejor hacer la conuslta y que retorne lo que necesitamos?.
+
+Tantos maps afecta el performance verdad?.
+
+Me tocó crear otra entidad de dominio para representar el retorno de la función AVG, siempre hay que colocar allí las del dominio 
+
+Entonces lo que va en entidades del dominio es como se lo voy a exponer a los clientes que me consuman?
+
+
+El implicit que coloco en cada funcipon del controller  no se puede hacer como en el trait

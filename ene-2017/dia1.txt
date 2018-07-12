@@ -1,0 +1,221 @@
+:::::::::::::::::::::::::::::::
+2017-01-26:::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::
+
+Arquitectura de software:
+
+Cumplir con lo funcional , no funcional 
+Ejercicio de diseño a nivel abstracto componentes y sus relaciones
+http
+jms
+brocj¿ker kafka
+
+La arquitectura es lo que ya está construido 
+
+El conceptp de microServicios es tene Bcountext delimitado.
+
+
+Reglas de los BC(bounded context), para cada uno de los que resulte en mi sistema:
+
+>Debe tener su Unidad de despliegue:
+	Un jar, tar, 
+
+>Debe tener su persistencia independiente 
+	No debe haber campos nulos en la persistencia
+	
+	
+	
+
+Una de las características de los BC es que es posible que se repita código porque en cada uno se usa
+
+--**************************************
+Buscar en internet el patron Saga!!
+--**************************************
+
+Librería vs framework
+
+Yo llamo a la librería y tengo el control porque la uso.
+
+El framework el llama el código que yo programo.(inversion de la dependecia e inversión del control).
+	Debo obedecer las reglas establecidas por el framework.
+	entonces por eso debo acer extends ejemplo htttp servlet es un framework.
+	
+IOC :Inversion del control. Logra estandar , da productividad.
+
+IOC NO es igual a INYECCIÓN DE DEPENDENCIAS
+
+eL experto es el que debería saber cual escoger porque hay unos que aumentan productividad pero sacrifican la calidad.
+Criticidad
+carga
+Modelo de asincronía?
+
+
+>Un framework trae IOC e inyección de dependencias.
+
+
+Play : frame web
+
+
+Particularidad:
+El manejo de los hilos lo maneja por debajo con el sistema de actores 
+
+
+
+COn play 1 solo hile puede atender miles peticiones http.
+El jar solo levanta su http
+escalabilidad vertical POR ESO SE ESCOGIÓ 
+
+pLAY NO ESCALA horizontalmente(tiene la librería). Depende de nuestra decisión de hacer uso de
+balanceo de carga 
+
+
+
+
+si son millones quizas ya Play no es la opción sino una decisión de arquitectura 
+	
+Escalabilidad horizontal 
+Las mejores desiciones están en el desarrollo (con estado) y dependo de la máquina
+Infra solo es una parte.(sin estado)
+
+
+Autocontenidas:
+Descargan sus propias liberías , NO HAY COMPARTIDAS
+
+
+
+
+PLAY::::::
+Permite construir la vista allí mismo 
+app monolitica
+
+Archivo de configuración de rutas : dice que controlador atiente que peticón por x URL
+antes del / quiere decir que va el contexto 
+
+GET     /personasDIEngine 
+
+
+sí el controller no hacerextends Controller  el framework no lo ve 
+
+las funciones retornan un Action
+
+Principios Rest:
+
+POST(verbo)    /insertarPersona (sustantivo)
+HiperTexto H: Texto enrriquesido tags etc no solo texto plano.
+
+Sí no muestra info con enlaces entonces no es Rest (HATEOAS).
+Rest: representation state transfer.
+
+Roy fielding 2001 tesis doctoral sobre rest como resultado la web.
+
+
+>Existen Liberías para response hipermediados
+hal + json
+siren + json
+collection  + json
+(estructura + formato)
+
+
+Bondad ppal 
+
+Que puedo tener los compponentes desacoplados
+
+escalabilidad funcional vía enlaces.
+
+
+
+en arquitectura entonces tengo un layer System para comunicarme con el exterior+
+pero internamente hablo en mi dominio
+
+
+>En el controller va
+
+Actioin.async
+No retorna un futuro sino que lo que hace es saber manejar el futuro que retorna el computo.
+
+
+COn Action solo hay asincronía pero la de play, es decir que llega la petición por un hilo y coge otro hilo y le pasa la tarea y el 
+mismo queda disponible para otra petición.
+
+Lo mismo hace servlet java1.6 en adelante pero no tiene la potencia del sistema de actores.
+
+en prog funcional los import tratemos de meterlos en cada función.
+
+
+En un hilo pueden alojarsen millones de acotores para evitar el switch context.BUSCAR EN INTERNET SWITCH CONTEXT ACTORS..
+
+
+--*****************************************
+Inyeccion de dependencias
+--*****************************************
+Poner lo que necesito
+
+An concepto tecnico NO hay inversion DE DEPENDENCIAS COMO LO ES UN FRAMEWORK (DONDE NO HAY INVERSION DEL CONTROL PORQUE EL FRAMEWOR YA TIENE LAS REGLAS) PERO SI HAY INVERSION DEL CONTROL porque YO COMO función x recibo x parametros
+pero no me doy cuenta quien las instanció 
+
+iNYECCION DE DEPENDENCIAS EJEMPLO
+
+Spring 
+
+@Autowired()
+Perro perro;
+
+public void{
+   perro.ladrar
+}
+
+
+
+
+Play
+@Inject
+...}..
+
+
+
+
+
+
+--*********************
+
+
+en el código ConsultaController
+hay inject repo y ni siquiera nosotros 
+
+
+
+La serializacion en play se  hace con PlayJSON
+
+se pasa de json a una clase scala con reads y de scala a json con writes.
+
+play json seriaiza colecciones también.
+
+
+
+El SUEÑO IDEAL ES QUE LA BD SOLO SEA PARA RESGUARDO DE DATOS NO PARA IR A CONSULTAR 
+EJEMPLO BDS EN MEMORIA QUE TENGAN LO DEL DÍA ACTUAL ETC CADA X TIEMPO IR GUARDANDO.
+
+
+
+Reader monad:
+Mecanismo de inyeccion funcional de dependencias sin inversion del control.
+
+
+
+
+--::::::::::::::::::::::::::::::
+Escritura de log
+log4j solo viejito
+
+Intermediario entre el cliente que quiere logear y en donde lo voy a escribir, formato 
+ejemplo de appender:
+a kafka, rabit etc 
+
+Log4j2 es ok
+LogBack 
+
+POR DEFECTO PLAY UTiLIZA LOGBACK
+archivo logback.xml
+
+
+

@@ -1,0 +1,201 @@
+Functional principles for Object Oriented Development.
+buscar en youtube Jessica Kerr, 
+
+Cambiar la mente y habla de dataIn y dataOut.
+
+
+Ver lo de leNt del código
+
+
+Ver Currying: Cuando una funcion es de Aridad mayor a uno se puede llevar a funciones de Aridad 1
+
+
+
+
+Modelo****************En sura 
+
+
+Modelo de Actores:
+
+Concurrecia : un recurso accedido por varios recursos, en paralelo o no.
+
+Paralelismo es dfte a concurrencia..simultaneidad
+
+Para que halla concurrencia debe existir paralelismo? R/ NO es necesario por que se puede ser concurrente, uno tras otro 
+		-Además no son causales.
+		-
+
+
+	
+Soluciones que da el Sistema ante concurrencia	
+	Semáforo
+	mutex
+	monitor (en java synchronize)
+	
+Problemas de 90 en adelante (programadores no saben multihilos;luego  aprenden ;terminan sabiendo que no saben nada :S)
+
+
+Carl Hewitt:
+ver docs de Erik Meijer.
+
+Actor Model (buscar en youtube Actor Model Carl Hewitt:)
+
+Ver RX Java
+
+
+
+
+
+1-Hay un estado MUTABLE  al cual varios quieren acceder.
+2-Si el primero no limpia el segundo queda con los otros valores
+
+Escencia del modelo de actores, que cada uno entre independientemente modifique estados 
+
+Sí no hay estado mutable entonces el model de actores no hace nada, si el recurso concurrido no es mutable 
+entonces no lo use
+
+
+-LOS DATOS SIN UNA IMPLICACIÓN.
+
+
+Caso de negocio: La factura que puede ser concurrida puede ser un actor.
+
+Función monotínica creciente : (leer en docs)
+
+
+
+Modelo de actores: (akka implementación del modelo de actores)
+	
+Un mensaje al tiempo 
+
+val a = _
+a! Msg("hi")
+
+
+Si no hay estado mutable(de un recurso eje una factura, impresora, acceso a Bds) entonces vámonos por futuros !!!
+
+
+
+Historia del modelo de actorers
+Carl hiw
+Joe Amstrong (creador de Erlang)
+extensión OTP del modelo de actores.
+
+2006 : Jonas Bonner (quizo implementar lo mismo en scala)
+		juntaron con Victor Clang : Creador de futuros
+		
+modelo de actores no es de scala ni de Erlang es basado en Erlang
+
+
+Un actor:
+Puede recibir mensajes o crear nuevos actres 
+
+y cada hijo (otro actor) puede hacer lo mismo
+
+Solamente existe  la relacion padre a hijo nada de sub-sub-
+
+-El padre supervisa al Hijo: Que al hijo le puede pasar algo un NullPointer (algo no manejado, OutOfMemoryError ojo no errores de negocio por que para eso 
+ya se usa lo de scala de typeo etc)
+
+Supervisión:
+	-Resume: 	borra el mensaje que le envió y vuelve a enviar los otros , es decir el que se le envió se perdió.
+	-Stop: 		
+	-Restar: 	
+	
+Un actor tiene Behaviour:
+	
+
+Actores:
+	Los mensajes se pueden enviar de un Actor a cualquier otro Actor
+	Todos los actores protegen un estado.
+	
+	
+Diseño de Actores ( buscar documentación)
+
+
+
+System.ActorOf: Hijo del sistema
+system.scheduler.schedule: No es una razon de peso para escoger akka, por un majenador de reloj sabiendo que hay varios, scala tiene uno.
+Cada cuando a que hora se le envía un mensaje de un mensaje a otro.
+
+
+
+MUY IMPORTANTE!!
+En el mundo de akka el execution context es el Dispatcher 
+	Si ud tienen actores que van a BD, servicios web ..asignele su dispatcher
+	leer bien como diseñar eso porque sino se le quedan en fila por estar en el mismo execution context
+	
+
+
+Todos los actores deben ser hijos de alguien.
+
+
+
+
+
+Ver documentación de akka
+
+
+
+Imanes o atractivos que no se deberían usar akka CCOMO SHEDULE PERO HAY OTRAS COSAS
+
+Antes : Lo que podía viajar por la red podían ser objetos 
+
+	Lo que se envié por la red debería ser Mensajes!!
+	
+	Tema de investigación de los 70 era que se replicaba info en los demás nodos para espejo pero la idea 
+	era usarlos efectivamente distribuir las tareas y más importante, saber cuando se fué uno y cuando se fue (gran dificultad COMPUTACIÓN ELÁSTICA)
+	Leslie Lamport:
+		se inventó
+		paxos
+		Lamport Laws
+		
+		
+	Los de akka con de matar un hijo y ActorRef 
+	Akka clustering (estudiar): Nos entrega distribución sin pensar en balanceos de carga, algoritmos, estrategias etc 
+	pasando mensajes, PUEDA QUE NO TENGAMOS ESTADO PROTEGIDO PERO SI ENTREGAN O ASEGURAN DISTRIBUCIÓN
+	Se logra el consenso de que hay o no un nuevo Nodo ESTO ES OTRA PARTE QUE MOTIVA DE USAR
+	
+
+ENTONCES SI NECESITA DISTRIBUIR POR ACÁ ES EL CAMINO 
+SI NECESITA PROTEGER EL ESTADO
+
+
+
+Patron de Arquitectura llamado Event Sourcing 
+Si tengo eventos pasados registrados debo ser capaz de volver al estado actual
+pero si hay un evento como que se fué la energía 
+
+
+y en el día a día traajar con la infor en memoria.
+akka sabe desde donde restaurar por ello existe 
+akka clustering
+akka sharding 
+akka persistance 
+akka-distributed-data.
+
+
+LO ANTERIOR SE SELECCIONA EN LA ETAPA DE CONCEPCIÓN DE LA Arquitectura
+
+Aprender de la DOC DE AKKA.
+MEZCLARLO CON ACTIVATOR 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

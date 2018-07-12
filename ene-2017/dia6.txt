@@ -1,0 +1,62 @@
+
+
+:::::::::::::::::::::::::::::::::MONAD TRANSFORMER::::::::::::::::::::::::::::
+1er Transformador
+OptionT : Sí  
+
+Either[String, Int]: O tiene String o Int 
+antes de V2.12 scalaZ realizó su Either monádico CON LA LEGADA DE 2.12 NO ES NECESARIO
+
+En V2.12 es parcializado o tiene tendencia por la derecha RIGHT BIASED.
+
+SCALAZ Disjunction
+en cats se llama  XoR
+
+Veamos : DisjunctionSchoolTest \/ (los palitos es de disjunctions) y \/- Luego el EN donde se encuentre el  - dice que va a llenar u operar por la Izq o drecha
+este ejemplo es por la derecha 
+
+
+
+2) 2do transformador
+::::::::::::::::...EitherTSchoolTest:::::::::::::::::::::
+
+getOrElse evalua el caso de la izquierda para validar el error, entonces le digo que si hay izquierda entonces tenga el valor en parentesis en este caso
+"EVALUACION A NONE"
+
+assert(res2.run.getOrElse("EVALUACION A NONE") == "EVALUACION A NONE")
+
+
+
+para que sirve todo lo de XoR???
+
+Resulta que slick devuelve Futuros; Luego en otros pedazos tengo Options, Try
+
+
+1 Capa que devuelva datos.
+2 Otra encima que envuelva esa y tome  la decisión de dejar el some o NONE.
+3 Apile lo que tiene en el paso 2 más los otros PUNTOS 2 QUE usted aplicó a otros contextos etc entonces.
+4 
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+3cer) Transformador ReaderT : Da inyeccion de Dependencias MAS EL EFECTO QUE LE quiera apilar:
+
+Eje Reader T con Futuro.
+
+
+
+Reader está definida en terminos de readerT
+cuando le dice .run el valor que entrega es Id , Id es una monada que no hace nada
+type Reader[E, A] = ReaderT[Id, E, A]
+
+
+
+ESTUDIAR KELISLY QUE ES EL TIPO DE READERT
+
+EJEMPLOS DE USO EN EL DLLO DIA DIA 
+Tipo de reader que retorna validated 
+
+
+
+

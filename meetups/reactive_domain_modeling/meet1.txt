@@ -1,0 +1,128 @@
+hablar de fp es 
+
+HOF
+pureza 
+composición
+lazyness (como y no el que)
+
+
+Acerca del Autor:
+ligthbend hace poco
+Modelado y construcci´on de apps.
+
+scalaZ migra a Cats Verificar
+4 y 5 mejores ca?itulos sobretodo 5
+
+ADT:
+Algebraic data types:
+Tipos compuesto de otro tipo:
+-tipo de abastracción 
+
+Product Type.
+Sum Types.
+
+1)
+case class Inversion(monto:Int, tiempo:Int)
+
+2)
+case class Inversion(monto, tiempo){
+
+	def calcularRentabilidad():Int = ???
+}
+
+Sí un case class tiene comportamientos entonces ya no es ADT el 1) sí lo es!
+
+Case clases para modelar las entidates.
+
+verbos: Comportamientos
+sustantivos: Entidades
+
+tipo sum o producto:
+El case class anterior es sum Type.
+
+
+Product Type:
+Si tengo dos atributos y digo que hay inversiones de 1 2 3 meses y 3 diferentes montos entonces
+la cantidad de combinaciones es 9 
+
+
+Cuantos habitantes tiene el atributo monto 
+entonces monto puede ser Monto(valor: Int, moneda:X)
+case class Inversion(monto:Monto, tiempo:Int){...
+
+Moneda es un sumTipe: O vive como peso o dolar pero no ambas
+
+CASE CLASES Y TRAITS PARA MODELAR ENTIDADES 
+
+
+Trait Inversion
+
+case class Cdt extends Inversion
+
+case class Fiducia extends Inversion
+
+
+Inversion acá es un tipo SUM porque solo puede ser CDT p Fiducia 
+
+
+--*************************************
+Trait Inversion
+
+case class Cdt(monto:Monto, tiempo:Int) extends Inversion
+
+case class Fiducia extends Inversion
+
+
+hasta acá no hay comportamiento solo se está definiendo el dominio.
+
+
+
+dominio codominio : Para llevar del dominio al codominio es por medio de la f()
+
+
+
+VER VIDEO DE BARTOSZ MAL (ALGEBRAIC DATA TYPES)
+EXPLICA PORQUE UN TIPO DE DATO ES ALGEBRAICO.
+
+VE RTEORIA DE TEORIAS PARA PROGRAMADORES DEL BARTOZL
+
+
+Impedante:
+oposición: Modelado en BD (ER) NOOO es lo mismo que le modelado DDD(cómo enender un dominio y deseñarlo), pues no es lo mismo una entidad un E-R que una en DDD.
+
+
+Los datos son una implicacion , pues empezamos desde el dominio (memoria) y generamos datos.
+NO PENSAR EN DATOS(PERSIETENCIA)
+
+
+--**********************************
+sÍ HAY REglas de negocio de por ejemplo restricciones de construcción entonces 
+
+
+sealed trait 
+No lo puede hacer extends sí no está en el mismo archivo.
+
+
+Sólid principle:
+
+Cerrado a la mod abierto a la ext.
+
+Disjunctions validations::.Estudiar
+
+SI EXISTE LA POSIBILIDAD DE PONER EN EL COMPANION DEL ADT operaciones pero solo como factory 
+UNA FUNCION QUE SE LLAME IGUAL AL ADT.
+
+sMART CONSTRUCTOR : lEER 
+
+Scala excersices .org
+ 
+
+ 
+ 
+
+
+
+
+
+
+

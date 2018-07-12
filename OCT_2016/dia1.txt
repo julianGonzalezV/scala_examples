@@ -1,0 +1,152 @@
+Aplicaciones Reactivas:Hacer el segundo 
+
+Ejemplo modificar (set) a un cerebro para que responda lo que deseo.(Protección de estad)
+
+
+OOP: no P 
+
+Por que nació la opp, quién ??
+Alan Key : década 76  la orientación a objetos es esto...
+Dijo: que todo era un objeto ...primer lenguaje objectual SmallTalk
+
+Cohesión (alto)
+Acoplamiento(bajo)
+encapsulamniento : Nadie accede a lo interno.
+
+EN programación OO como java hace set y ya afecté el estadi interno.(Esto no es orientación a objetos)
+1990 : Basic
+
+
+98-90: Sistemas cliente servidor.
+
+
+Ancho de banda
+Costo de chip
+
+Estas dos cosas anteriores 
+
+
+2001 en adelante : Java o .Net
+
+Prog Imperativa: lo que hemos hecho todo el tiempo.
+
+Allan turing : decifrar los mensjaes alemanes, máquina de turing.
+
+Alosno Shurch?: El de turing es más abstracto.(Cálculo lambda)
+
+
+
+
+
+
+Puro: Decir que recibe y que retorna.
+
+
+Orientado objetos: Divide y vencerás: 
+--*****************************************++
+Composición: COnectar lo que hace cada cosa 
+Ejemplo de dir .>> hola
+dir sabe listar direcotrios
+>>lo escribe en un archivo
+
+Heramientas nuevas de FP para hacer composisicpon de computo
+-HOF: Recibir y/o retornar funciones a su vez  (hiher-order-functions): Comportamientos suben de nivel 
+
+	en oop se llama callback (mande éste mensaje y ellos le devuelven la llamada cuando ellos ejecuten)
+-Lazy evaluation
+
+
+
+Todo orientado a objetos: Tratar de hablar sis verbos (prog orientado a objetos)
+
+
+En FP Son puro verbos
+
+
+Pero la vida real se modela de ambas formas (verbos y sust)
+Si se va de todo a FP entonces se encuentran otros errores no hay sustantivo.
+
+
+Sustantivo y comportamiento ambos 
+
+Algo anexo al computo: Algo colateral (una excepción) no mandé a computar algo para que se demorara o fallara.
+
+No es aprender sino el propósito:
+
+
+2008: dos paradigmas 
+Scala : Ambos 
+
+En FP puro ..quien lo es el objeto ejecutor ..que entidad? lo hacen puras funciones, puros comportamientos
+
+What kind of thing area easy in haskell and hard in scala and viceversa
+
+Estrategia de diseño funcional para adoptar AMBAS TÉCNICAS 
+Al hacer esa mezcla tiene un impacto grande sí no se hace bién 
+
+FP puro: Categoría
+
+
+
+ARGUMENTO PRINCIPAL DE USAR SCALA
+UNA API DE HERRAMIENTAS PARA COMPONER!! no de que menos cod.
+
+---*******************++en scala para hacer pruebas pruebas tiene scala Test que prueba por 
+NORMALES,
+1: Suite (formal XXunit)
+ PROPIEDANES 
+
+2. Specs : Igual de qpruebas unitarias solo que cambia la forma como se e3scribe
+ejemplo flagSpec donde hello
+
+Cuando quiero probar con propiedades
+x=>X ES IMPAR ETC  ---SCALA TEST CON PROPSEC 
+
+SCALA LO COMPLILA A BITECODE QUE ES LO QUE COMPLILA LA JVM
+
+CUANDO DEFINO COSAS POR DENTRO PARA YO USARLOS ---SE LLAMA CLOJURE
+
+
+
+Collections:::
+Universalidad : De que si se usar un map o para que sirve etonces aprendo para los demás
+
+-HigOrder Funcions
+
+-Las colecciones de java son más rápidas en oeprar las de scala.
+-pero las de scala tienen HOF
+-Modelo conceptual y cerebral son mejores las listas de scala
+Lis()
+	morfismos especidficos 
+		map : funcion de orden sup que recibe una funcion como parametro que defina con un def o en el momento de usar map 
+		
+aparte: def f1(i:Int):Int ={
+	i+2
+}
+
+si hay 2 listas una creada de otra lo que hace scala internamente es reutilizar optimamente lo que tiene de la L2
+
+
+
+Liast(1) map (i=> f1(i))
+	
+
+Map()
+Set()
+
+
+
+testOnly paqueteyclase
+git checkout develop
+para borrar lo que había
+re -rf scala_school
+pwd ubicación
+ll: listar los direcotrios existentes
+
+
+
+
+
+
+
+

@@ -1,0 +1,184 @@
+Collections
+
+head.op
+
+si está programando y hace un try-catch entonces cuestionese!!
+
+java slank para manejo de tuplas.
+
+acceder una tupa _1 ver línea 
+
+Muy recomendado las tuplas.
+
+
+
+en scala toda funcion es un objeto porque a la final todo va a bytecode de 
+
+Las trasnformaciones son de una categoria a la misma categoría.
+
+por ejemplo map 
+
+
+forach es coga este elemento y haga éste computo...No lo manda a otra lista como es Map.
+
+Map restringe y es que al final el resultado es OTRA LISTA, LA CUAL PUEDE VOLVER A COMPUTAR---functores!!
+PUEDO COMPONER COMPUTAR COMPUTOS ANTERIORES 
+
+
+fOReACH es imperativo No hay una ley de functor que le restriga y por eso No puedo seguir computando 
+
+
+fold: 
+
+foldLeft: Acumular de iz a der
+foldRig: de derecha a izq
+fold solo es conmutaivo.
+
+Pero si eusted requiere un orden entonces ose el left o rig
+
+Ojo que fold no solo es para sumar ...en el negocio 
+
+en listas está Ausente un FlatMap.
+
+
+Tarea: Leer la suit de Map y de Set que están escritas 
+
+
+
+
+
+
+--::::::::::::::::::::::::::::Contextos (matematicamente es hablar de functor)
+Hemos dicho que la funcion debe decir Y PUEDE PASAR ESTO 
+	
+DEFECTOS 		Constructores de tipo eje TRY NO ES UN TIPO ES UN CONSTRUCTOR DE TIPO
+-latencia   	Future
+
+-Existencia 	Options
+
+-Fallo			Try(puede hacer un map flatMap , filter de un fallo etc )  : Try sobre Feautiru cuando el tiempo no es problema, respuesta inmediata etc 
+buscar en internet más argumantos, cuando uno o el otro etc.
+debido a que el context switching es costoso....PERO DEBO ESTAR seguro que el computo NO ES COSTOSO.
+
+LO QUE HACE LA GENTE PARA CURARSE EN SALUD
+gadt : gENERIC ALGEBRAIC DATA TYPE: Uno como programador diseñar sus  propios contextos
+con Cats, 
+Es un curso más avanzado.
+
+LAS MONADAS NO COMPONEN, PERO PUEDE EXISTE OTRO ARTIFICIO LLAMADO MONAD TRANSFORMER (COSTOSO)
+
+SI UD HACE QUE UNA FUNCION EVALUE A FETURE OTRA OPTIOIN Y OTRA FUNCION QUE EVALUE A TRY 
+ESTAMOS PENSANDO EN IMPERATIVO
+
+ POR ESO TENDER TODO A UNA SOLA CATEGORÍA 
+ 
+ 
+ LO QUE HACEN LOS PROGRAMADORES ES ESCOGER LA CATEGORIA FUTURE PORQUE ME DA MANEJO DE FALLO DE UNA VEZ Y RESUELVE LO DE LATENCIA
+ POR EJEMPLO QUE PASA SI TODO LO DEJÉ EN TRY Y DE REPENDE UNA NUEVA OPERACIÓN O COMPUTACIÓN EN DONDE LA LATENCIA SI ES UN PROBLEMA
+ PORQUE SE DEMORA Y REQUIERO TENERLO EN CUENTA ...COMO YA TENÍA TODO EN TRY PRACTICAMENTE POR LA inclusión de ese nuevo debo hacer todo 
+ por que los computos en cadena se morirían por ese nuevo algo así entendí :) 
+ 
+ 
+
+
+
+
+
+Mi computo recibe esto se evalua esto y puede
+
+
+Option[Int]: O hay un entero o no hay nada.
+En docencia no sugiere enseñar con ejemplos sino desde el ser por el concepto.
+
+Futuro: lA PERSONA A se fue con el futuro d(la caja con money) el futuro es que un valor va a estar así no sepa si está o no el valor
+La transacción se pudo y el efecto colateral de latencia 
+Las papas existen si la plata existe 
+
+La analaogia de la billetera y que no se verifica si hay plata ..pero se compró unas papas
+
+-Estamos acostumbrados a trabajar con los valores y eso nos hace imperativos 
+METERLO DENTRO DE UNA CAJA.
+
+si tengo un futuro de clientes y le hago un map para transformar a factuas cliente entonces voy a tener un futuro de factuas cliente
+
+Lista es ub fuctor que tienen muchos elementos (o uno)
+
+Si tengo un Try (arriba) de tipo Int y le aplico un Map a Booleano entonces voy a obtener un Try 
+
+-En haskell ya vienen más cajas creadas en scala NO pero si las herramientas para hacerlo (ejemplo scala o cats) 
+
+
+FUTURE ES LA SUPER-MONAD
+
+
+
+Futuros.
+
+Historia en imperativo manejo problema de concurrencia 
+
+semafocros 
+mutexes???
+monitores
+
+
+Presión contraria:
+Back Pressure:
+
+
+Sí ud sabe que algo se va a ademorar bara y cieere llaves en future y tiene un hilo
+
+
+si se hace 
+Si se tiene
+Case Class MyCaseClass(a:Int)
+
+val f = Future{1}
+//pero f no importa si tiene valor o no ..llllo puede operar
+val r = f.map(x=>MyCaseClass(x))//r es un future{MyCaseClass}  x es el valor empelota
+//la trasformación ocurre en otro hilo??? NO, sucede en el mismo hilo, sincrónicamente cuando es con map se espera que f esté.
+
+con Morfismos se mete a tratar los datos.
+
+
+val r2 = r.map(x=>x.a+1) // r2 es un future{Int}
+
+La categoría Future se mantiene!!!, además el map automaticamente evalua a otro futuro y puedo seguir trabajando
+
+
+Hay una forma imperativa para future (muy fea :) 
+
+f.onSucess{
+	x=> MyCaseClass(x)
+}
+//Acá es un camino sin salida no puede obtener el valor de la evaluación.
+f.onfailure{
+	case e.exception{
+		....
+	}
+}
+
+El código la verificación vamos a ver
+val aw = Await.result(f,1)
+SOLO EN CODIGO DE PRUEBAS NO EN CODIGO DE PDN!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+La gran deferecia entre los callback 
+
+
+
+val h1 = future{1}
+val h2 = h1.map(x => Future{x+3})
+lo anterior da un Future[Future{Int}]
+
+val h3 = h1.flatMap(x => Future{x+3})
+
+si le hago flatmap me aplana el futuro y la operacion del flatMap se ejecuta en otro Hilo por que se hizo otro future
+
+FlatMap en haskell se llama bind simbolicamente es (>> encadenar computos)
+
+
+
+
+
+

@@ -1,0 +1,203 @@
+TAREA
+
+2017-02-03 (FEB)
+
+DESCARGAR RABBIT Y APRENDER COMO INICIARLO Y PARARLO 
+>Cuando se inicia por defecto no se inicia la consola => ENTONCES INSTALAR EL MÓDULO PARA LA CONSOLA WEB 
+
+https://www.rabbitmq.com/jms-client.html
+
+
+
+Que pasa si quiero que en un for comprehension esten varias logicas una F que va  Futuro(x) y Option(x)
+
+TRANSFORMADOR DE MONADAS ---->Tema pendiente para la proxima sesión
+
+
+De Play falta:
+	Modules
+	Action Composition
+	Sistema actores dentro del Play 
+	Play Logger	
+	SBt release
+	
+
+	
+	
+--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+INTEGRACIÓN POR EVENTOS 
+
+Integración: Comunicar
+
+
+Primeras maneras de Integrarse (comunicarse) ERA PUNTO A PUNTO
+eje : Objetos distribuidos
+
+	>Debía ser la misma tecnología
+	>Si era Java debía llegar a Java
+
+Corba: Un objeto en común 
+Java envia por corba y .NET conocía corba:  Fracasó
+
+Luego los hermanos de corba
+Jee: EJBS
+.NET opbetos Bcom(algo así)
+
+Se emitía un mensaje, que se tenía que serializar(la serialización es el objeto complero en jama es RMI remote method invocation) y el otro sistema debía
+instanciarlo 	
+
+
+Luego en el año 2000 termina tesis doctoral de Rest y en el mismo año Microsoft mete money en SOAP
+
+
+Daba tooling : Que a partir del wsdl le genere el cliente y eso vendió muucho 
+
+SOAP: Simple Object Access Protocol
+
+Lo único interesante es el SO :) Simple Object.
+
+Soap lo que dice es que se serialicen los objetos de una forma estandar y simple de tal manera que todos empiecen a hablar lo mismo 
+IGUAL A CORBA !! TODOS SERIALIZAN A LO MISMO
+
+AMBOS TIENEN EL ERROR DE QUE INTENTAR SERIALIZAR EL COMPORTAMIENTO 
+  > EL mensaje lleva el nombre de la acción y los parámetros 
+  eje sumar 1+1 entonces si sumar(en mi app java) ya recibe 3 numeros (la firma) entonces si lo llaman con 2 parámetros
+  entonces retorna error 
+  
+  >Y si tengo muuchos clientes? entonces todos deben cambiar el llamado (el formato)
+  
+  
+  
+EL ESTILO ARQUITECTÓNICO REST no cometió este mismo error
+solo mande parámetros 
+
+por eso si pone los verbos en la URL esta MAL  PORQUE ES LA ACCIÓN 
+
+Interface uniforme 
+serie 1 2 3 4 o 5 sí no se maneja ése.
+
+Soap le pone protocolo encima del http Rest usa el http por ESO REST ES MÁS RÁPIDO NO PORQUE EL FORMATO SEA JSON PORQUE EL FORMATO EN REST PUEDE CAMBIAR
+
+Http es un prootocolo de http7
+
+
+
+La rapidez de rest ha sido mal interpretada de fondo.
+
+
+>EL ESQUEMA PUNTO A PUNTO tiene la desventaja que si se cae el destino el origen se cuelga.
+
+
+HAY OTRO ESTILO DE INTEGRACION QUE NO ES MEJOR NI PEOR PEEROO OFRECE DESACOPLE- Integración por Eventos:
+
+
+>Yo boto un mensaje en una caja y al que le interese llega y lo recoge y lo procesa 
+
+
+-AL responder lo que se deja en la canasta es el tipo de dato y el mensaje: eje Poliza Generada, Orden de producción enviada 
+-Un mensaje se hace broadcast 
+-Cuando publique el evento se debe producir el evento con la forma y naturaleza mia, parámetros que conozco y si el que lo recoge
+tiene otra forma (tiene otro lenguaje oblicúo)
+EL que publicó no tiene porque satisfacer a toodos los clientes más bien 
+
+
+Orquestacion VS Coreografía de Servicios
+Orquestacion : Una cabeza orquestando sus necesidades y es posible que sea más secuencia 
+
+
+Coreografía: Un sistema recibiendo un input procesando y generando un Output 
+Cada aplicación en su domini sique siendo la misma (si anemica, o de las no tradicionales) SOLO QUE LOS DATOS DE ENTRADA 
+LE LLEGAN POR UN PUERTO ADICIONAL AL HTTP 
+
+LAS PANTALLAS SIGUEN SIENDO LA MISMA
+EL USUARIO ACTIVA LA PANTALLA MEDIANTE UNA ACCION 
+POR HTTP LLEGA EN MENSAJE AL DOMINIO (BACKEND)
+LO ANTERIOR IMPLICA QUE EL DOMIIO PUBLIQUE UN EVENTO EN UNA CANASTA 
+
+LOS QUE ESTEN SUSCRITOS AL CONTEXTO DE EVENTOS (CAJA) DETECTA QUE HAY UN NUEVO MENSAJE
+ENTONCES VERIFICA SI LO CONOCE Y LO PROCESA
+
+
+SMART ENDPOINT DUMB PIPELINE (lA INTELIGENCIA ESTÁ EN LOS PUNTOS FINALES ) EL CANAL (O LA CANASTA) No conoce nada.
+
+
+El end point analiza si recibió x parámetros hago Y si recibo menos entonces hago Z
+
+EN la canasta puede existir los eventos de cualquier tipo 
+
+PERO HAY QUE hacer la claridad de que ES BROADCAST POR TIPO ya que no le llegan a todos sino a los interesados, ejemplo
+los de financiera le interesa a la gente suscrita a ese tipo de mensaje, y los de otro dominio al set de suscritos a ese domain.
+
+LEER DELIVERY SEMANTIC!!!
+
+
+eN LA semantica de entrega , dice que 
+1-Garantía de entrega -exactly one. Cai que imposible 
+2-A lo sumo Una :Cero o una vez , lo voy a entregar pero puede que no lo entregue.
+3- Uno o más : Cómo mínimo o más.
+
+
+
+Pregunta:
+
+>Que es mejor Enviar un payload muy grande? ejemplo poliza y tooodos sus rieesgos o por cada riesgo un evento por cada riesgo?.
+R/ AL ser el payload muy grande y hay restricciones tecnológicas al serializar todo.
+
+JMS es a integracoines con bradcker como RMI con SOAP Rest.
+
+
+EN el concepto el publicados pone una cola y el suscriptor lee mensaje de esa cola
+
+
+
+Dificultades:
+-Uno como desarrolador es muy inocente y no pregunta que pasa si el broadcker se cae?
+-Capacidad del equipo de desarrollo de entender bien la SEMANTICA DE DELIVERY LEER.
+
+
+LEER KAFKA?????
+
+
+
+El broadcker 
+
+
+
+LEER DE CIRCUIT BRAKER 
+
+
+LOS ENDPOITNS SOPORTAN REPETICION DE MENSAJES? O SI LLEGA DOS VECES DOS VECES LO PROCESA?
+
+
+SI NO LLEGA EN X TIEMPO?
+
+
+
+BUSCAR QUE LOS BROADCKER SEAN DISTRIBUIDOS 
+Ejemplo:
+KAFKA
+RABBITMQ
+
+AMQP como protocolo?
+QUe es un exchange?
+
+
+LEER :
+
+Recomendado:
+
+AMQP lo inventó Pieter Hinljens.
+Autor de 3 libros ver si me interesa :) 
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,218 @@
+:::::::::::::::::::::::::::::::
+2017-01-27:::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::
+
+En play el repo lleva HasDatabaseConfigProvider
+
+dbConfigProvider : Es config provider porque inyecta o entrega el que da la configuración pero no porque esa clase lo devuelva
+
+
+slick.dbs : Cuano la base de datos con la que vayamos a trabajar sera esa sino en el archivo application.conf antes de la conf slick esta la de jdbc
+
+driver = "slick.driver.H2Driver$"  //enlaza a play con slick 
+    db {
+      driver = "org.h2.Driver" // enlaza a slick con h2
+	  
+	  
+	  
+	  
+En la clase PersonaRepoDIEngine inyecta el DatabaseConfigProvider y mezcla el HasDatabaseConfigProvider
+
+Y HasDatabaseConfigProvider YA SABE QUE HACER CON EL DatabaseConfigProvider
+
+TRAIT MIXIN 
+
+
+
+eh HTTP el get es seguro.
+
+en la carpeta dominio va la logica del negocio 
+
+
+
+:::::::::::::IMPORTANTE::::::
+
+Al momento de DISEÑAR NO COMENZAR POR LOS DATOS , esta relacionano con los verbos y sustantivos del negocio
+
+qUE EXISTE UN CLIENTE Y QUE TIENE FAMILIA No empiece a pensar con las tablas que van a ir sino que empiece por identificar entidades y relaciones entre esas
+
+entidades pero desde el lado de scala
+
+Cree cluster entre entidades SON AGGREGATE (agregado) 
+Cuando existe relaciones de que yo no puesdo existir sino existe otro ESE OTRO ES un agregado 
+
+
+1)PRIMERO DDD ESTRATEGICO 
+
+2)Cuando se mete en un bounded context entonces es  DDDTACTICO (LEER DEL LIBRE DDD) DISEÑO EN SUSTANTIVOS Y VERBOS DE NEGOCIO
+3) fINALMENTE LA BD
+
+
+
+Repository es un patron de DDD táctico  PATRON DE DISEÑO DE DOMINIO 
+SI TIENE UN REPO QUE DEBE IR A UNA TABLA ENTONCES EL REPO TIENE SUS DAOS Y DTOS PARA ESO 
+>EL REPO NO HABLA SQL 
+>REPO DEVUELVE DOMINIO 
+
+Los repos no se hace para consultar sobre las tablas sino que se hacen para los aggregate. 
+A los repos no le importa si quedó en una tabla o un archivo 
+
+Ejemplo tomador de que?? debe existir la poliza 
+
+
+
+
+DAO y DTO otro patron 
+dao hago el acceso a BD y junto con el DTO se envpia al repo
+
+
+
+
+
+"LOS DATOS SON UNA IMPLICACION" consecuencia, pero no son el origen del diseño 
+
+
+
+case clasee provee el apply que ahorra el new 
+y tiene el toString
+
+Sustentivos en case
+
+Verbos en traits donde están las funciones que aplican sobre los adts
+
+
+
+cuando no uso case class y solo dejo class nos vemos tentados 
+a implementar operaciones allí cuando debería ir en el try (verbos)
+
+
+el otro ADT es Abstract data Type: Definicion algebraica de una clase
+que es una clase : Conjunto de atributos y comportamientos sobre esos atributos
+
+
+allan kake dijo que los objetos ejecutaban operacoines sobre ellos mismos entonces el objeto poliza en OO
+tiene el metodo tarifar.
+
+
+
+
+EG
+
+
+Proyecto scala_school_scala_z
+
+HOF es un fundamento del programacion funcional
+
+HOF
+Componer funciones para que a partir de funciones pequeñas solucione un problema grande
+
+
+
+PATRONES FUNCIONALES:
+Recetas confirmadas matemáticamente.
+
+
+Por un lado composicion de funciones HOF
+
+
+Por el otro lo Matemático.
+
+
+https://github.com/juanpavergara/scala_school_scalaz.git
+
+
+Cómo describir abastractamente la Matemática
+
+
+
+Pero un man empezó a investigar acerca de la teoría de categotías
+Una rama de las matemáticas.
+
+Describe las formas Topología ()
+circulos y asociamos con una formula
+
+
+Uno de haskel le llamó la atencípon de lo de categorías
+
+
+En el estudio de como aplicar las categorías a FP uno de los resultados es LA MONADA
+
+
+MONOIDE: 
+
+SUMA EN EL CONTEXTO DE HORARIO 
+
+9PM + 3 = 1AM
+
+EL PUNTO CERO = 12:00
+
+
+--::::::::::::::::::::::::...LEER
+MONOIDE ES UNA ESTURDCTURA DE DATOS QUE DEFINE UN CERO Y UNA OPERACION 
+ES DE PRIMER ORDEN PORQUE SOMOS NOSOTROS LOS QUE IMPLEMENTAMOS EL CERO Y OPERACION
+
+SEMIGRUPO = OERACION Y NO EL PUNTO CERO.
+GRUPO COMPLETO?
+
+
+--::::::::::::::::::::::::PATRONES DE SEGUNDO ORDEN 
+iMPLEMENTACIONES QUE YA ESTÁN HECHAS DEL PATRON Y YO LAS USO 
+
+
+
+LEYES DE LA MONADA
+
+FUTURO ES OTRA MONADA ALGUIEN LA HIZO YO NO PROGRAMÉ EL FUTURO.
+
+
+
+
+READER MONAD (DI) DEPENDENCY INYECTION
+
+Vamos a ver como hacer inyeccion de depenciencias en nuestro dominio
+
+def f(Int) => String
+
+1))reader POSTERGA LA EVALUACIÓN DE LA FUNCIION (lazy evaluation)
+
+val r = f(1)
+
+>Pero en reader yo no llamo a f(1) sino fINALMENTE
+
+val r = f  //acá le dice deme un número y yo me ejecuto 
+
+usando flatMap
+
+f.flatMap(x=>f.flatmap(y=>))
+
+Imperativo 
+val r1 = f(1)
+val r2 = f(2)
+
+acá ya se evaluó en readerMonad no se evalúa hasta que no se le pase el número para que se ejecute 
+
+lo que dispara el códige es 
+r.run
+
+
+
+
+
+SacalaZ y cats(categoríes)
+LEER DOCUMENTACIION DE CATS es más amigable que scalaz como los de scalaz son tan aletas surge un grupo y crea cats
+
+VER VIDEOS DE YOUTUBE
+
+DEAD-SIMPLE DEPENDENCY INJECTION
+FUNCIONAL PROGRMAMING IN SCALA MANNIN 2012
+
+TONY MORRIS DEPENDENCY INJECTIONS WITHOUT THE GYMNASTIC 
+
+LEER FUNCIONAL AND REACTIVE DOMAIN MODELING
+
+
+
+
+
+
+

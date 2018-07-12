@@ -1,0 +1,255 @@
+2017-02-02::::::::::::::::::::::
+
+
+LEERRRR 
+Recurso para entender patrones funcionales
+http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
+
+
+paper que habla del Iterator Pattern
+https://www.cs.ox.ac.uk/jeremy.gibbons/publications/iterator.pdf
+
+
+paper sobre applicative functor
+http://www.staff.city.ac.uk/~ross/papers/Applicative.pdf
+
+
+
+De segundo order, porque alguién lo implementó y yo lo uso. Somos usuario de la implementación de la mónada
+
+Existen:
+Functor Aplicativo, instancias
+	>Validations o validated (con cats o scalaz)
+		ScalaZ se llama validation
+		Cats se llama Validated 
+			Es lo mismo cats es un fork de scalaZ
+			
+
+las mas simple es Functor, podemos hacer map (en la teoría se llama fmap)
+>cuando uso map estoy utilizando la capacidad de functor.
+>Luego a partir de functor sale otro más restrictivos LA MONADA
+	Más restrictivos porque para hacer un map necesito un functor
+	pero para ser
+	
+	
+>Luego los de haskel vieron que uno era muy sencillo y el otro (la monada) era muy restrictivo. 
+POR ESO SALE APPLICATIVE FUNCTOR 
+	>Validations es una instancia de Applicative
+	
+	
+	
+	def futureToFutureTry[T](f: Future[T]): Future[Try[T]] =
+  f.map(Success(_)).recover(x => Failure(x)
+	
+	
+FUNCTOR APLICATIVO 
+
+
+Lo primero que ofrece es el Map 
+map es una función que de map(x=>T ): M(T) M-modela el efecto   (puede verlo cómo M de mónada :) :) )
+	>REstricción en modanas es que si mapeo entre funciones entonces es un map que va a la misma aridad con la que se inició 
+	
+POR ESO APARECE APPLICATIVE FUNCTOR !!!
+	>> Si se llama con una función de aridad 1 funciona como el anterior
+	>>Pero si se llama con  varios
+	
+	
+Leer mucho el código de Juan pablo del gitHub ValidationSchoolTest
+
+
+La carateristica #2 de una applicative functor es la ESTRUCTURA FIJA:
+	 test("tes que NO continua2"){
+    //por ser MONADICO ENTONCES LA ESTRUCTURA NO ES FIJA
+    //Y NO SNECESARIAMENTE SE EJECUTA TODA LA OPERACION EJEMPLO:
+    // SI NECSITO QUE SE INTERRUMPA EL COMPUTO ENTONCES MÓNADAS
+    //SINO CUANDO REQUIERO QUE SE EJECUTE SI O SI
+
+    //REGLA TODA MONADA ES APLICATIVO PERO NO TODO APLICATIVO(APPLICATIVE) TIENE LA
+    //CAPACIDAD DE SER MONÁDICA
+
+    var counter = 0
+    def foo():Option[Int] = {
+      counter+=1
+      Some(1)
+    }
+    def bar():Option[Int] = {
+      counter+=1
+      None
+    }
+
+
+    val r: Option[Int] =   for {
+      a <- foo()
+      b <- bar()
+      c <- foo()
+
+    }yield a+b+c
+	
+	
+	
+	
+
+    //si tiene una computacion de varias operaciones y alguna es None el resultado es None
+    assert(r==None)
+    r.map(x=>assert(x==2))
+    assert(counter==2)//COUNTER NO ES 3
+  }
+  
+  
+  
+  EN LA CLASE APPLICATIVE TEST DEL GUTHUB
+  
+  LINEA 43
+  |@| Es para transformar de Option a APlicative 
+  
+  
+  
+  monada es un functor porque puedo entrar al contexto, transformar y salir
+  Y ES ENDOFUNCTOR porque voy de una categoría a la misma categoría.
+  
+  
+ 
+
+ 
+ >MORFISMO EN TEORÍA DE CATEGORIÍAS ES UNA OPERACION QUE SE APLICA SOBRE LA CATEGORIA.
+ >EL FLATMAP SE LE HACE AL CASCARON NO AL DATO QUE CONTIENE.
+ 
+ 
+ 
+ LINEA 194
+ scalaz pone el concepto de aplicativo sobre futuro 
+ val result1 = (f1(1) |@| f1(2) |@| f1(3))(MyGADT.apply)  haga cada uno(futuros) y cuando termine llegue a MyGADT
+ 
+ val result2 = (f1(1) |@| f2(2) |@| f1(3))(MyGADT.apply).recover{
+      case e:Exception => "BOOM!"
+    }
+
+	
+	
+TRAVSERSEOPS:
+//  siendo TraverseOps lo siguiente
+//  final class TraverseOps[F[_],A]
+//  la firma de traverse es la siguiente:
+//  final def traverse[G[_], B](f: A => G[B])(implicit G: Applicative[G]): G[F[B]]
+
+sE LEE: lo importante es saber que G[B] va a G[F[B]]
+
+ES DECIR QUE SI tengo un Option(Int) entonces applicative agrega Option(Algo(Int))
+
+Otro ejemplo
+List(Option(1), Option(2))	
+travserse 
+hace 
+
+Option(List(1,2))
+
+
+ENTONCES APPLICATIVE FUNCTOR ES MÁS LAPSO (MENOS RESTRICTIVO) PERO MENOS poderoso
+>Caracteristica del aplicatvo es FIJA, quiere decir que se ejecuta todos sus computos 
+
+
+traverse: Invierte los contextos, hace el tortugas
+
+lA TEORÍA DICE QUE EL PODER DE LA MÓNADA ES QUE SI HAY ERROR LO DEMÁS NO SE EJECUTA
+
+PERO SE REPITE MÁS QUE el 
+
+
+
+Aplicativos que no sean mónadas:
+
+ZIPLIST aplicative functor : VERIFICAR PARA QUE SIRVE
+
+PERO VAMOS A VER 
+VALIDATION (desde el manejo del error monadico)
+
+
+
+
+::::::::::::::::Ahora vemos ValidationSchoolTest que es una implementacion de applicative functor
+Casos en los que se puede usar 
+si necesito expedir una poliza o enviar un correo, si falló el correo no debe parar el computo ps a menos debo ejecutar la 
+expedición de la póliza.
+
+Validación de formularios, que no diga uno a uno que campo va fallando paso a paso sio¿no que indique cuales fueron todos
+
+
+
+
+ Validation[Throwable, String]: La izquierda es el tipo del error y el de la derecha es el tipo de cuando es Success
+ 
+ ValidationNel. Nel de non empty list
+ 
+ 
+ ValidationNel[Throwable, String] : Lista no vacía de excepciones
+ 
+ 
+       case _ => Failure(NonEmptyList(new Exception("IMPAR")))//FailureNel(new Exception("IMPAR"))
+
+	   
+	   como el falure es de un ValidationNel entonces se dice que es un failure de una lista de errores que noe vacía sino que contiene el IMPAR
+	   
+	   
+
+UTIL PARA VALIDACIONES POR ESO SE LLAMA Validation
+EJEMPLO LA CUENTA DE APERTURTA QUE EN DONDE LA FECHA DE APERTUTRA NO SEA MAYOR A LA FECHA FIN 
+ENTONCES USO ValidationSchoolTest
+
+
+
+SON VALIDACIONES DE NEGOCIO !!
+pero enfocado a validaciones internas y que sepa que hacer en casos en que falle y no necesariamente 
+}
+
+
+en el test Acumulacion de errores - ERROR (2)
+el fold es como de doblar 
+
+
+FOLD(IZQ, DERE): en LA IZQ MANEJA  EL FALLO DER MANEJA SUCCESS
+
+
+en caso de error arma un xml con todos lo errores
+en caso de exito 
+
+res.fold(
+      { errorResponse =>
+        println(s"Xml validation failed: $errorResponse")
+        errorResponse.map{
+          error => println(s"error: ${error}")
+        }
+      }, { entity =>
+        println(s"Entity : ${entity}")
+      }
+    )
+	
+	
+en rest quedo con la lista de errores 
+
+
+
+Caso real del expositor 
+
+Cuando llegue una petición http enctonces haga las validaciones de negocio y retorne al front lo que falló y lo que no continue con el computo de ellos
+
+MILES SABIN
+
+
+
+
+Que desventaja tiene el applicative functor?
+Sacrifica no poder hacer pasos secuenciales que dependen uno del anterior
+
+
+el ejemplo de persona(aunque aplicó applicative y se ejecutaron todos) si ambas validaciones fallan entonces solo se muestra el primer mensaje de error.
+
+entonces aparece en Cats Validated
+
+
+
+
+
+
+
+
+

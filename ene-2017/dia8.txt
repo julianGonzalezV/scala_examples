@@ -1,0 +1,97 @@
+
+Feb 16 2017::::::::::::::::::::::::::::::::::::::::::::::::::::::::.
+
+Los Listeners en java servían para ejecutar cosas antes del inicio de mi app, inicializar cosas etc
+
+
+
+Si en el folder app hay modulos entonces no se requiere colocarlos en el application.conf si está en otra ruta 
+entonces si.
+
+
+un módulo debe implementar eel configure()
+
+
+Modulos hacen lo mismo se ejecutan una sola vez 
+
+
+ModuloInyectorActorRMQ:
+Involucra módulos , inyección de dependencias y actores.
+
+Mod actores:
+Sí no hay problemas de concurrencia entonces nO USAR, 
+>Proteje estado mutable en situación de concurrencia.
+>si llegan miles de mensajes el Actor procesa uno a la vez.
+>VER VIDEOS DE CARL HEWWITT(INVENTA EL SISTEMA DE ACTORES) AND ERICK MEIYER.
+
+THE ACTOR MODEL.
+
+Sí toda info está en memoria entonces el modelo de actores resulta muy adecuado para proteger dicha info ante concurrencia.
+
+
+SI TENGO TODO EN BD, ES DECIR EL ESTADO PERSISTIDO EN BD entonces el modelo de acotes pierde terreno porque no hay nada que proteger.
+
+:::::::::::::::::
+ver CRDT DE AKKA:
+
+
+:::::::::::::::::
+
+ERICK MEIJER AND LESLIE LAMPORT  CHANNEL 9 
+
+Ejemplo proteger estado es que si voy por un recurso (impresora)entonces si no existen estos mecanismos puede generarse error en las impresiones 
+, una variable que necesitan varios actores.
+
+
+Sólo se le comunica al actor vía pasos de mensajes.
+
+ESTO ES ENCAPSULAMIENTO 
+
+JOE AMSTRONG agarra el modelo de actores y es quien primero lo implementa en Erlang 
+
+jonas bonner lo hace en scala que se lama akka
+
+
+
+....:::::::::::::::::::::::::::::::
+Miguel vila Yuyi kiriki modelo de actores
+
+Cuando actores?
+y cuando futuros??
+
+
+Utilidades por encima de actores
+Akka Streams : Leer 
+Oprabbit 
+Play framework
+
+
+
+:::::::::::::::::::::::::::::::::::::::::
+INYECCION DE DEPENDENCIAS DE ACTORES:
+with AkkaGuiceSupport
+
+pLAY YA TIENE UN SISTEMA DE ACTORES ENTONCES LO RECOMENDABLE ES NO VOLVER A CREAR OTRO SYSTEM.ACTOROF aproveche el que ya existe.
+
+
+
+
+con oprabbit que hicimos en scala la idea es que solo se creen los exchange porque 
+los subscriptions se crearía en otra función de crear subscripción 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::.::::::::::::::::::::::::::::::::::::::::::::::::::::::::.

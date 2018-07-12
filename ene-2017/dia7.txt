@@ -1,0 +1,265 @@
+
+::::::::::::::::::::::::::::::::::RABBIT 
+
+User: guest
+Password: guest
+
+para que la consola de admin funcione se necesita del pluggin
+rabbitmq-plugins enable rabbitmq_management
+
+
+http://localhost:15672   PUERTO POR DONDE INICIA:
+
+stop [pid_file]:::::::::::::::::::::
+Stops the Erlang node on which RabbitMQ is running. To restart the node follow the instructions for Running the Server in the installation guide.
+If a pid_file is specified, also waits for the process specified there to terminate. See the description of the wait command below for details on this file.
+For example:
+rabbitmqctl stop
+This command instructs the RabbitMQ node to terminate.
+
+
+
+stop_app:::::::::::::::::::::
+Stops the RabbitMQ application, leaving the Erlang node running.
+This command is typically run prior to performing other management actions that require the RabbitMQ application to be stopped, e.g. reset.
+For example:
+rabbitmqctl stop_app
+This command instructs the RabbitMQ node to stop the RabbitMQ application.
+
+start_app:::::::::::::::::::::
+Starts the RabbitMQ application.
+This command is typically run after performing other management actions that required the RabbitMQ application to be stopped, e.g. reset.
+For example:
+rabbitmqctl start_app
+This command instructs the RabbitMQ node to start the RabbitMQ application.
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+OASIS : Gente que crea estandares SOAP lo rigue OASIS
+
+Zero mq : (cero colas)
+
+Rabbitmg es de la empresa PIVOTAL, hacen un producto que habla AMQP
+
+La promesa de SOAP es desacoplar el cliente y server
+La promesa del AMQP es desacoplar las tecnologías para integración por colas.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+EIP: Libro que especifica patrones de integración
+
+Patron
+FF : fire and forget el productor pone un mensaje y yá, si la intención es que se entere uno solo o todos ya es de diseño 
+en cualquiera de los casos usar FF 
+
+El productor dice este mensaje van para X interesados(subconjunto) , todos etc , a uno solo  eso es diseño.
+
+Sí quiero a todos o a uno solo entonces creo bandeja por cada interesado 
+
+Sí es uno solo y para todos entonces en destino debe mirar en el de uno solo y en el de todos.Asumiendo que el de uno solo es de un emisor diferente 
+
+::OTROS PRODUCTOS QUE HABLAN MQ
+ACTIVE AMQP
+
+
+::ADICIONAL A AMQP HAY OTROS PROTOCOLOS PERO hablan en  protocolo propietario 
+ej el de IBM.
+
+
+El concepto de COLA en donde el productor pone y el consumidor obtiene se basa en 
+
+
+UN EXCHANGE: 
+El productor pone los mensajes allí NO PONE MENSAJES EN COLAS , esto es para diseño .
+AL productor no le importa para que Queue va el mensaje
+De un exchange pueden ir los datos a Una o  a N colas.
+Si necesito que el mensaje que hay en el exchange le lleguen a todos los consumidores entonces debe existir una cola  por cada consumidor para que sea más 
+rápido.
+
+	>Un exchange puede ser:
+		Direct : RK vacío entonces iría a una cola especifica
+		Direct RK (direct con round key): A las colas con el rk dado 
+		Fanoat: Le entrega a todas las colas
+		TOPIC: 
+		Headers: 
+
+
+
+
+UN QUEUE: 
+El consumidor consume de allí y no le importa el exchange. 
+Al consumidor le interesa que en X queue existan mensajes.
+Una cola puede entregar mensaje a Uno o N consumidores,pero cuando tengo varios mensajes para varios consumidores
+entonces hace ROUND ROBIN.
+
+Las colas no tiene tipo de colas.
+
+BINDING: Une un Exchange con una Queue. 
+dice que la cola x se relaciona con el Rk 
+
+
+SE NECESITA saber la configuración de la integración sino no le hace seguimiento nadie !!
+
+revisar esas reglas de configuración , la idea es no depender tanto de esos arguments si se puede que todos sea RK
+
+aHORA FANOUT: Publican en el exchange y llega a toda las colas 
+
+EN SURA DICEN que evitar los fanouts que porque consume muchos recursos, sin embargo, hablando de microservicios que se comuniquen entre ellos
+lo natural es que sean fanouts 
+
+
+
+AHORA TIPO TOPIC: 
+
+
+
+Como crear las topologías 
+La puede hacer la app que la rquiere  o un tercero y que se peguen 
+
+
+
+La semantica de los exchange deben ser eventos:
+REclamación realizada 
+Poliza evaluada 
+
+
+O 
+
+Modelar los exchange como comandos
+tarifar 
+evaluar
+
+Si se escribe así entonces tarifar solo le importa al tarifador 
+pero si digo TARIFACIÓN SOLICITADA
+La necesidad de que se realice una tarifación le puede interesar a más 
+
+En resumen más recomendable nombrar los exhange con eventos en pasado.
+
+
+
+AHora en las colas:
+
+Usando sustentivos: Los sustantivos denotan estado instante, foto , como decir que ahí están las solitudes , cotizaciones.
+Ejemplo de sustantivos: Persona, polizas
+
+El estado lo da el suscriptor por lo cual cuando se habla en sustantivos entonces se corre el riesgo de querer realizar consultas 
+ de nuevo mejor eventos.
+ 
+ 
+ KAFKA: Sistema qcomo rabbit que se conectan a un broadcker
+ 
+ 
+ 
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+ CQRS: Command Query Responsibility Segregations: Segregacoin o separación de responsabilidad de hacer consultas 
+
+Dice que se debe tener un modelo de datos de comandos y un modelo de datos de consultas
+
+los comandos es como la parte donde hace el join de que no puede existir A sin B , y luego hacen el insert en tablas aparte 
+
+
+Lo principal es que se ejecuta un comando y salen eventos , una consulta es un comando 
+
+
+si hay consecuencias, entonces la publica y alí entra rabbit MQ
+
+
+Antipatron : Un solo exchange, porque toca coger el mensaje y saber si me interesa.
+
+POR Desconocimiento de Arquitectura de Integración!!
+
+NO UTILIZAR UN SOLO EXCHANGE PARA TODO Y TAMPOCO TAN GRANULAR Y CAER EN LA REPETICIÓN 
+
+
+
+KAFKA SE LLAMA DISEÑO DE TOPICOS ; LEER
+
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+op-rabbit: https://github.com/SpinGo/op-rabbit
+
+En scala tiene opciones:
+>Desde el jar de java que permite las conexiones con rabbit.(java client)
+>o Utilizar una capa por encima de esa librería pero hecha en scala.
+Ejemplo akka rabbitMQ client
+
+entonces las capas de abao hacia arriba es:
+java client->Akka rabbot MQ client->OP-rabbit->my aplication
+
+de lo contrario ENTONCES SI SOLO USO EL JAVA CLIENT DEBO DE HACER TODO A MANO.
+
+
+
+Abrir proyecto op-rabbit e ir a la clase test 
+BindingSpec
+
+AL hacerle test al proyecto crea el exchanhe y el queue de una en el rabbit que tengo instalado.
+
+
+
+
+
+timcharper
+
+The opinionated:
+
+
+testOnly com.spingo.op_rabbit.BindingSpec
+[success] Total time: 24 s, completed 15/02/2017 06:44
+
+thunk : Es un pedazo de código que se va a ejecutar después.
+
+
+
+Subscription.run(rabbitControl) : Lo que hace es que levanta la suscripción para que los demás escuchen.
+
+rabbitControl ! Message: Se le hace tel del mensaje pero no se lo entrega a rabbit directamente sino que le debe decir a que exchange 
+
+en este caso al mismo exchange que acabo de crear en la topología.
+
+
+
+
+en applicaton.con hosts = ["localhost"] está en vector porque pueden existir varios , es decir PUEDE ESTAR EN CLUSTER.
+
+
+
+Binding.headers":
+queueName + "int",
+queueName + "String",
+
+lo anterior es para direccionamiento
+
+varios consumidores a una cola entonces round robin
+si quiere un esquema full publicador, consumidor entonces un queue por cada consumidor
+
+Lo más importante es diseñarlo bien.
+
+
+
+NO A UN SOLO EXCHANGE PARA TODO !!!!!
+
+
+
+
+
+QUE LLEGA ALGUIEN Y VE QUE YA HAY UN EXCHANGE Y USA EL MISMO 
+
+Riesgo:
+En sura por ejemplo se debe crear un ticket para crear un exchange etc, entonces por eso usan el mismo exchange.
+
+
+
+
+este no tiene restricciones en cuanto a consumidores, cantidad de mensajes, todo depende de la infraesructura.
+
+
+
+
+
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+

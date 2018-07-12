@@ -1,0 +1,180 @@
+2017-02-01
+
+Slick : Librería para conexión a bases de datos soportada por lightbend
+
+
+
+
+VENTAJAS:
+
+>Permite manejar las tablas como colecciones.
+>Siempre evalúa a future.
+
+
+No necesariamente requiere play lo puede agregar como dependencia.
+
+Desde play lo importa solo y ahorra algunos pasos
+Ejemplo
+Import Play.slick 
+
+
+vimos collections, futuros
+
+
+
+Ahora vamos al paquete persistencia 
+carpeta tablas:
+
+
+clase y se pode a extender de table de un tipo y el string es el nombre de la tabla
+
+personaRepo>>personaRepoReader:
+
+
+en el paquete  conf.evolutions.suraentrenamiento se 
+
+
+pARA insertar personas entonces por postman 
+
+git add test
+git commit -am 'mensaje'
+git flow init
+
+el track es como el set de clases modificadas.
+git flow feauture track slick
+
+Content-Type   application/json
+
+{
+	"dni": "1234",
+	"nombre": "oleeee",
+	"apellido": "joooo"
+}
+
+
+
+
+
+Paqueta tablas>>Ejercicio.scala 
+
+
+http://slick.lightbend.com/doc/3.0.0/sql-to-slick.html
+
+
+
+-:::::::::::::::::::::
+Slick da la ventaja de tartar las tablas como colecciones, y colecciones tiene demasiadas bondades 
+
+Ahora :
+
+Recover y RecoverWith (lo mismo de flat y flatman) por el primero se ejecuta en el mismo hilo el segundo en otro 
+
+
+Además retorna un futuro si depronto hay latencia de ida a la base de datos 
+y aún siendo error puedo operar con el error
+
+
+en aplicacoines tradicionales
+
+UI
+Back end 
+Persistencia 
+
+
+estando en la capa de persistencia
+SI YO TENGO EL ESTADO EN LA BASE DE DATOS 
+>Los comportamientos del negocio dependen de un estado 
+	El estado es necesario , no puede haber comportamiento de negicio sin estado 
+	
+>Si me mandan a hacer una renovación y no pude obtener el estado actual entonces no puedo renovar
+
+a nivel de arquitectira un interrogante es en DONDE PONGO EL ESTADO
+
+SI PONDO EL ESTADO EN DONDE TENGO RISGO DE ACCEDERLO ENTONCES PUEDO TENER UNA APP INESTABLE 
+
+
+
+eSCENARIO 1
+Tradicional: 
+Tengo el estado en base de datos 
+Tiene UNA CONSISTENCIA DE modelo secuencia lineal 
+	Actualizo el estado y la consulta inmediatemente posterior tiene en cuenta ese cambio
+	Insert y luego count , el count responde con el nuevo 
+		ES SUPER CONSISTENTE PERO TIENE QUE BLOQUEAR 
+		
+ENTONCES SI ME MANDAN UN RESTO DE PETICIONES ENTONCES LOS DEMÁS DEBERÁN ESPERAR HASTA QUE 
+OTRO SACRIFICI ES:
+	si se desaparece la bd todo se muere
+	si se replica pero ENTRE MÁS REPLIQUE MÁS SE VA A DEMORAR 
+	
+	
+	SACRIFICA LA LATENCIA Y LA DISPONIBILIDAD 
+	
+	
+	
+PERO HAY LUZ SOBRE OTROS ESQUEMAS 
+
+EXISTE OTRO MODELO DE CONSISTENCIA
+
+
+2)MODELO DE CONSISTENCIA EVENTUAL
+	>En algún moemnto todo ele mundo va a tener la misma información pero no ya
+	>ejemplo un cluster pero todo inicia en un nodo y el replica a los demás pero sí consulto en el último inmediatamente no responde
+	SCARIFICA LA INCONSISTENCIA 
+	TRANSACCIONES BANCARIAS SUELEN A NO SOPORTARLO 
+	
+	PERO NO TOODOS LOS CASOS SON TRANSACCIONALES
+	
+	QUIZAS LOS ÚNICOS SON LOS QUE TENGAN QUE VER CON PLATA 
+	
+	
+	EJEMPLO BASE DE DATOS KASSANDRA 
+	
+	
+	-EL ESTADO LO TIENEN EN MEMORIA Y SE VAN ENVIANDO SNAPCHOTS A LA BASE DE DATOS COMO RESGUARDO 
+
+Ejemplo el modelo de actores distribuido en memoria 
+
+ESPECIFICAMENTE NO SE HABLÓ DE UN MOTOR DE BASE DE DATOS QUE PERMITA RESGUARDO EN RAM SINO QUE SE HABLAN DE MODELO
+
+
+ENTONCES SLICK APARTE DE SERVIR COMO CONEXIÓN A BD Y QUE BRINDE COLLECTIONS TIENE OTRA PARTE:
+
+LO ANTERIOR
+DISEÑO DE ACCESO A DATOS 
+
+
+LEER EN LA TEORÍA 
+>CRDT
+
+Y PARA LA PRÁCTICA
+>AKKA-CLUSTER 
+>AKKA-DISTRIBUTED-DATA 
+
+
+
+
+
+
+
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
