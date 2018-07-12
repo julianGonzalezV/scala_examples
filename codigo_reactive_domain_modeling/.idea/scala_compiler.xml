@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="SBT 1" modules="codigo" />
+    <profile name="SBT 1" modules="codigo_reactive_domain_modeling" />
   </component>
 </project>

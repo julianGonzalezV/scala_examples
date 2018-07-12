@@ -1,0 +1,6 @@
+Estructuras de datos en scala:
+List
+Trees
+Tuples
+
+def t = Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))
