@@ -21,9 +21,19 @@ Option[Animal]).
     def filter(f: A => Boolean): Option[A]
   }
   case class Some[+A](get: A) extends Option[A] {
-    override def map[B](f: A => B): Option[B] = Some(f(get))
 
-    override def flatMap[B](f: A => Option[B]): Option[B] = f(get)
+    /**
+      *
+      * @param f
+      * @tparam B
+      * @return
+      */
+    def map[B](f: A => B): Option[B] = this match {
+      case Some(a) => Some(f(a))
+      case _ => None
+    }
+
+    override def flatMap[B](f: A => Option[B]): Option[B] = map(f) getOrElse(None)
 
     override def getOrElse[B >: A](default: => B): B = get
 
@@ -118,6 +128,13 @@ Option[Animal]).
     if (xs.isEmpty) None
     else Some(xs.sum / xs.length)
   }
+
+
+  def variance(xs: Seq[Double]): Option[Double] ={
+    if (xs.isEmpty) None
+    else Some(xs.sum / xs.length)
+  }
+
 
 
 
