@@ -132,7 +132,13 @@ Option[Animal]).
 
   def variance(xs: Seq[Double]): Option[Double] ={
     if (xs.isEmpty) None
-    else Some(xs.sum / xs.length)
+    else{
+      val m = meanOk(xs)
+      //con mao sería Option[Some[Double]]
+      //con flatMap como lo recomienda el libro es Option[Double], que es lo que retorna la funcion :)
+      val v1: Option[Double] = m.flatMap(m=> Some(xs.map(x=> math.pow(x-m,2)/xs.length).sum))
+    }
+
   }
 
 
