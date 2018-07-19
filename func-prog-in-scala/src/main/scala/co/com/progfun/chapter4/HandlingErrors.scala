@@ -1,5 +1,7 @@
 package co.com.progfun.chapter4
 
+import scala.collection.immutable.Stream.Empty
+
 object HandlingErrors {
 
 
@@ -156,7 +158,70 @@ Option[Animal]).
 
   def abs0: Option[Double] => Option[Double] = lift(math.abs)
 
+  def Try[A](a: => A): Option[A] = {
+    try Some(a)
+    catch {case e: Exception => None }
+  }
 
+
+
+  def validateInsuranceRateQuoteRequest(age: String, numberOfSpeedingTickets: String) : Option[Double]={
+    val ageAux: Option[Int] = Try(age.toInt)
+    val numberOfSpeedingTicketsAux: Option[Int] = Try(numberOfSpeedingTickets.toInt)
+
+    /*Formas de llamar a insuranceRateQuote con los datos sin el wraper Option
+      1) FlatMap seguido de Map
+      2) For Comprehension
+      3) Implementar una funcion propia que reciba 2 Option y resuelvan a un Option ver map2
+     */
+    //1) ageAux.flatMap(age => numberOfSpeedingTicketsAux.map(ticks => insuranceRateQuote(age,ticks)) )
+    /*2)
+    for(
+      ageI<-ageAux;
+      tcks<-numberOfSpeedingTicketsAux
+    )yield insuranceRateQuote(ageI, tcks)
+   */
+
+    // 3)
+    map2(ageAux, numberOfSpeedingTicketsAux)(insuranceRateQuote)
+  }
+
+/*
+  def map2[A, B, C] (a:Option[A], b:Option[B]) (f: (A,B)=> C): Option[C] = a match {
+    case Some(x) => b match {
+      case Some(y) => Some(f(x,y))
+      case None => None
+    }
+    case None => None
+  }*/
+
+  /**
+    * Version mejorada de map2, trate de no usar tanto pattern matching
+    * @param a
+    * @param b
+    * @param f
+    * @tparam A
+    * @tparam B
+    * @tparam C
+    * @return
+    */
+  def map2[A, B, C] (a:Option[A], b:Option[B]) (f: (A,B)=> C): Option[C] = {
+     a.flatMap(x => b.map(y => f(x,y)))
+  }
+
+  def insuranceRateQuote(age: Int, numberOfSpeedingTickets: Int): Double = {
+    age/numberOfSpeedingTickets
+  }
+
+  def sequence[A](a:List[Option[A]]): Option[List[A]] = {
+    val v1x = for(
+      opt <- a;
+      ops <- opt match {
+        case None => None
+        case Some(x) => x
+      }
+    )yield ops
+  }
 
 
   def main(args: Array[String]): Unit ={
@@ -230,14 +295,21 @@ Option[Animal]).
     println(HandlingErrors.meanOk(Seq(2,4,6,8,10,12)))
     println(HandlingErrors.variance(Seq(2,4,6,8,10,12)))
 
-    println("Option composition and lifting:::::::::::::")
+    println("Option composition and lifting:::::::::::::LIFTING EG1")
     /*
     Note lo bacano que es el lifting, que nos ofrece la propiedad de llevar funciones que trabajan con otros tipos que no son options o que
     no estan emvueltos en un option y las convierte a que si se puedan manejar con option, mire como no se modificó para nada
-    mathabs de java sino que que le hizo lifting
+    mathabs de java sino que que le hizo lifting. Lo anterior puede aplicarse a cualquier función :)
      */
     println(HandlingErrors.abs0(Some(-3)))
 
+
+    println(":::::::::::::validateInsuranceRateQuoteRequest:::::::::::::::::::::::::LIFTING EG2")
+    //nOTE COMO RETORNA NONE POR LA j EN EL STRING
+    println("validateInsuranceRateQuoteRequest: "+validateInsuranceRateQuoteRequest("3J0", "3"))
+
+    //Y ADEMÁS NOTE QUE EL CORRER EL MAIN EL COMPUTO NO SE PARA Y CONTINÚA CON ESYA LÍNEA
+    println("validateInsuranceRateQuoteRequest: "+validateInsuranceRateQuoteRequest("30", "3"))
   }
 
 }
