@@ -19,6 +19,7 @@ Option[Animal]).
       */
     def orElse[B >: A](ob: => Option[B]): Option[B]
     def filter(f: A => Boolean): Option[A]
+
   }
   case class Some[+A](get: A) extends Option[A] {
 
@@ -37,12 +38,19 @@ Option[Animal]).
 
     override def getOrElse[B >: A](default: => B): B = get
 
+    /**
+      *Funcion que retorna otro Optio, muy util cuando deseamos encadenar computos
+      * @param ob
+      * @tparam B
+      * @return
+      */
     override def orElse[B >: A](ob: => Option[B]): Option[B] = Some(get)
 
     override def filter(f: A => Boolean): Option[A] = {
       if(f(get)) Some(get) else None
     }
-}
+
+  }
 
   case object None extends Option[Nothing] {
     override def map[B](f: Nothing => B): Option[B] = None
@@ -53,7 +61,9 @@ Option[Animal]).
     override def orElse[B >: Nothing](ob: => Option[B]): Option[B] = ob
 
     override def filter(f: Nothing => Boolean): Option[Nothing] = None
-}
+
+
+  }
 
   //la idea es gestion de errores sin lanzar excepciones
 
@@ -134,12 +144,17 @@ Option[Animal]).
     if (xs.isEmpty) None
     else{
       val m = meanOk(xs)
-      //con mao sería Option[Some[Double]]
+      //en lugar de flatMap tambien se podría usar  map, donde el tipo sería Option[Some[Double]]
       //con flatMap como lo recomienda el libro es Option[Double], que es lo que retorna la funcion :)
-      val v1: Option[Double] = m.flatMap(m=> Some(xs.map(x=> math.pow(x-m,2)/xs.length).sum))
+      m.flatMap(m=> Some(xs.map(x=> math.pow(x-m,2)/xs.length).sum))
     }
 
   }
+
+  def lift[A, B](f: A => B): Option[A] => Option[B] = _ map f
+
+
+  def abs0: Option[Double] => Option[Double] = lift(math.abs)
 
 
 
@@ -204,6 +219,24 @@ Option[Animal]).
     println(dept3)
     val dept4: scala.Option[String] = employeesByName.get("Bob").map(_.otroDepartamento())
     println(dept4)
+
+    println("Filter + getOrElse")
+    val deptJoe1: scala.Option[String] = employeesByName.get("Joe").map(_.department)
+    val deptJoe: String = employeesByName.get("Joe").map(_.department).filter(_ != "Accounting").getOrElse("Default Dept")
+    val deptBob: String = employeesByName.get("Bob").map(_.department).filter(_ != "Accounting").getOrElse("Default Dept")
+    println("deptJoe => "+deptJoe+"  deptBob => "+deptBob)
+
+    println("Mean and variance")
+    println(HandlingErrors.meanOk(Seq(2,4,6,8,10,12)))
+    println(HandlingErrors.variance(Seq(2,4,6,8,10,12)))
+
+    println("Option composition and lifting:::::::::::::")
+    /*
+    Note lo bacano que es el lifting, que nos ofrece la propiedad de llevar funciones que trabajan con otros tipos que no son options o que
+    no estan emvueltos en un option y las convierte a que si se puedan manejar con option, mire como no se modificó para nada
+    mathabs de java sino que que le hizo lifting
+     */
+    println(HandlingErrors.abs0(Some(-3)))
 
   }
 
