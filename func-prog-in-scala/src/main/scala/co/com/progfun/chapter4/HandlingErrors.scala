@@ -41,7 +41,7 @@ Option[Animal]).
     override def getOrElse[B >: A](default: => B): B = get
 
     /**
-      *Funcion que retorna otro Optio, muy util cuando deseamos encadenar computos
+      *Funcion que retorna otro Option, muy util cuando deseamos encadenar computos
       * @param ob
       * @tparam B
       * @return
@@ -89,7 +89,7 @@ Option[Animal]).
     * entonces la función debería retornar el mismo resultado que failingFn y no es así
     * ya que entra al catch
     *
-    * Además TAMBIEN depende del contexto en donde se ejecute, note como al fallar dentro del try hizo otra cosa y si falla entoro
+    * Además TAMBIEN depende del contexto en donde se ejecute, note como al fallar dentro del try hizo otra cosa y si falla en otro
     * try? R/ va a  ir a otro resultado
     * @param i
     * @return
@@ -169,7 +169,7 @@ Option[Animal]).
     val ageAux: Option[Int] = Try(age.toInt)
     val numberOfSpeedingTicketsAux: Option[Int] = Try(numberOfSpeedingTickets.toInt)
 
-    /*Formas de llamar a insuranceRateQuote con los datos sin el wraper Option
+    /*Formas de llamar a insuranceRateQuote con los datos sin el wrapper Option
       1) FlatMap seguido de Map
       2) For Comprehension
       3) Implementar una funcion propia que reciba 2 Option y resuelvan a un Option ver map2
@@ -196,7 +196,8 @@ Option[Animal]).
   }*/
 
   /**
-    * Version mejorada de map2, trate de no usar tanto pattern matching
+    * Version mejorada de map2, trate de no usar tanto pattern matching, cuando sean posibles otras opciones
+    * como por ejemplo la que se muestra acá
     * @param a
     * @param b
     * @param f
@@ -214,14 +215,60 @@ Option[Animal]).
   }
 
   def sequence[A](a:List[Option[A]]): Option[List[A]] = {
-    val v1x = for(
-      opt <- a;
-      ops <- opt match {
-        case None => None
-        case Some(x) => x
-      }
-    )yield ops
+
+    def loop[B](li: List[Option[B]], acc:Option[List[B]]): Option[List[B]] =  {
+      println("sequence  -> "+li)
+      if(li.isEmpty)acc
+      else if(li.head.equals(None)) loop(List(), None)
+      else loop(li.tail, map2(acc, li.head)((x,y)=> x :+ y))
+    }
+
+    loop(a, Some(List()))
   }
+
+  /**
+    * mUY FACIL DE hacer si es con map y luego sequence pero esa no es  la idea porque sería
+    * O(nexp2) su complejidad
+    *
+    * Note comoal final esta es una version mejorada de map + sequence y queda de complejidad O(n)
+    *
+    * @param a
+    * @param f
+    * @tparam A
+    * @tparam B
+    * @return
+    */
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
+
+    def loop(li: List[A], acc:Option[List[B]]): Option[List[B]] =  {
+      println("traverse  -> "+li)
+      if(li.isEmpty)acc
+      else if(li.head.equals(None)) loop(List(), None)
+      else {
+
+        val transfVal = try f(li.head) catch {case e: Exception => None }
+        loop(li.tail, map2(acc,transfVal)((x,y)=> x :+ y))
+      }
+    }
+
+    loop(a, Some(List()))
+  }
+
+
+  /**
+    * Esta funcio tiene un problema y es que recorre 2 veces el set de datos O(n exp 2)
+    * el primero para recorrer la lista uy devolver List[Option[A]] y el segundo para devolver un Option[List[A]
+    * @param a
+    * @return
+    */
+  def parseInts(a: List[String]): Option[List[Int]] ={
+    sequence(a map (iStr=> {
+      println("parseInts item -> "+iStr)
+      Try(iStr.toInt)
+    }))
+  }
+
+
 
 
   def main(args: Array[String]): Unit ={
@@ -308,8 +355,23 @@ Option[Animal]).
     //nOTE COMO RETORNA NONE POR LA j EN EL STRING
     println("validateInsuranceRateQuoteRequest: "+validateInsuranceRateQuoteRequest("3J0", "3"))
 
-    //Y ADEMÁS NOTE QUE EL CORRER EL MAIN EL COMPUTO NO SE PARA Y CONTINÚA CON ESYA LÍNEA
+    //Y ADEMÁS NOTE QUE EL CORRER EL MAIN EL COMPUTO NO SE PARA Y CONTINÚA CON EStA LÍNEA(213)
+    //es decrir que no se para por el error dela "J"en la línea 310
     println("validateInsuranceRateQuoteRequest: "+validateInsuranceRateQuoteRequest("30", "3"))
+
+    println(":::::::::.sequence::::::::::::::::")
+    println(sequence(List(Some(1), Some(2), Some(3))))
+    println(sequence(List(Some(1), Some(3), None)))
+
+
+    println(":::::::::.Parse several  Ints::::::::::::::::")
+    println(parseInts(List("1", "2", "3")))
+    println(parseInts(List("1", "2h", "3")))
+
+
+    println(":::::::::.TRAVERSE:::::::::::::::")
+    println(traverse(List("1", "2", "3"))((x:String)=> Some(x.toInt)))
+    println(traverse(List("1", "2h", "3"))((x:String)=> Some(x.toInt)))
   }
 
 }
