@@ -33,6 +33,32 @@ object EitherMain extends App{
     }
 
 
+  def mkName(name: String): Either[String, Name] ={
+    if (name == "" || name == null) Left("Name is empty.")
+    else Right(new Name(name))
+  }
+
+  def mkAge(age: Int): Either[String, Age] ={
+    if (age < 0) Left("Age is out of range.")
+    else Right(new Age(age))
+  }
+
+  /**
+    * Pruebe enviando un dato ok y otro erróneo, pruebe enviando los 2 erróneos
+    * Cómo puede mejorarse para que reporte ambos errores y no que cada vez que arrelglemos uno
+    * salga el error del siguiente mal, imagine un formulario que no le diga de una sola
+    * vez todos los errores que se tiene :( aburridor cierto?
+    * @param name
+    * @param age
+    * @return
+    */
+  def mkPerson(name: String, age: Int): Either[String, Person] ={
+    mkName(name).map2(mkAge(age))(Person(_, _))
+  }
+
+
+
+
 
 
   //Pruebas
@@ -58,5 +84,14 @@ object EitherMain extends App{
     salary <- Right(1000000.0)
   } yield Employee(name, age, salary)
   println(vForEitherOk)
+
+
+
+  println("Mk Person example:::::::::")
+  println("Ok =>  "+mkPerson("Juliancho", 31))
+  println("one mistake  =>  "+mkPerson("ju", -10))
+  //acá solo sale un error a la vez, muy aburridor para el caso en que existan varios
+  //cómo lo mejoraría?, haría otro tipo de dato?
+  println("Full mistake  =>  "+mkPerson("", -31))
 
 }
