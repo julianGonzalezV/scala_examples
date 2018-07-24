@@ -12,26 +12,35 @@ import java.util.stream._
 
 object Expansion {
 
-def square(x:Double, exp:Int, acc: Double): Double = {
-  if (exp <= 1) acc
-  else square(x, exp-1, acc * x)
+def exponential(x:Double, exp:Int): Double = {
+  def loop(x:Double, exp:Int, acc: Double): Double = {
+    println("exp "+exp + " x "+x)
+    if (exp <= 0) 1
+    else if(exp==1) acc
+    else loop(x, exp-1, x * x)
+  }
+  loop(x, exp, 1)
 }
 
-  def factorial(n: Int, acc:Double): Double = {
-      if (n <= 1) acc
-      else factorial(n-1, acc * n)
+  def factorial(n: Double): Double = {
+    def loop(n: Double, acc:Double): Double = {
+      println("facto "+n+ " x ")
+      if (n <= 1) 1
+      else loop(n-1, acc * n)
+    }
+    loop(n, 1)
   }
 
 
   def expansion(x: Double):Double = {
     def loop(nIter:Double, acc:Double):Double = {
-      if(nIter <= 1) {
+      if(nIter <= 0) {
         println("va a retornar")
-        acc + x + 1
+        acc
       }
       else {
-        val squa = square(x, nIter.toInt, x)
-        val facto = factorial(nIter.toInt, 1)
+        val squa = exponential(x, 10)
+        val facto = factorial(x)
         val result = (squa / facto)
         println("sq=> "+squa)
         println("factorial=> "+facto)
@@ -39,7 +48,7 @@ def square(x:Double, exp:Int, acc: Double): Double = {
         loop(nIter-1, acc+result)
       }
     }
-    val v1: Double = loop(x,0)
+    val v1: Double = loop(10,0)
     val v2: String = f"$v1%1.4f"
     v2.replace(",", ".").toDouble
 
