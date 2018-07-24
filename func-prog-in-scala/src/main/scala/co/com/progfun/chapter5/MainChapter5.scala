@@ -108,4 +108,51 @@ object MainChapter5 extends App {
     * Así mismo lo anterior es la base de Streams :)
     */
 
+
+ def cualquierFuncion(x:Int):Int = {println("cualquierFuncion"); x}
+ def cualquierFuncion2(x:Int):Stream[Int] = {println("cualquierFuncion2"); Stream.cons(x, Empty)}
+
+ println("Streams Test 1 Forcing thunk (thunk es la forma  => A para escribir non-strict functions)")
+  //acá estamos forzando a que se evalue siempre la funcion que se le pase con () => se hace eso
+  // en este caso la firma del constructor lo reglamente y que podemos hacer para volverlo non-strict y que haga caché??
+
+ val x1 = Cons(() => cualquierFuncion(5),() => cualquierFuncion2(6))
+ println(x1.headOption)
+ println(x1.headOption)
+
+  /**
+    * Note como al al ejecutar test1 y test2 solo aparece una sola vez en test 2 el Print , porque hizo caché del val :)
+    */
+
+//Acá  la respuesta a la pregunta anterior
+  // se logra con smart constructor en este caso Stream.cons
+ println("Streams Test 2 Cache version")
+  //Note tambien como lo primero que se llama es el apply
+  //cualquierFuncion es una función para demostrar que SI HACE CAHE
+  //Pero se puede crear el Stram directamente con los raw values eg Stream( 7, 8, 9, Empty)
+ val x2 = Stream( cualquierFuncion(7) , cualquierFuncion2(8), Stream(9, Empty) )
+  println(x2)
+ println(x2.headOption)
+ println(x2.headOption)
+
+  println("Streams TO-LIST")
+  println(x2.toList)
+
+  val x3 = Stream( "hola" , "Como estas", "te ves igual", Empty)
+  println(x3.toList)
+
+  println("::::::take::::::::::::::")
+  val vx =
+  println(x2.take(2).toList)
+
+  println("::::::Drop::::::::::::::")
+  println(x2.drop(2))
+
+  println("::::::Take While::::::::::::::")
+  val intStream = Stream(1,2,3,4,5,6)
+  println(intStream.takeWhile(_>3).toList)
+  println(intStream.takeWhile(_%2 == 0).toList)
+
+  println("::::::5.3 Separating program description from evaluation::::::::::::::")
+
 }
