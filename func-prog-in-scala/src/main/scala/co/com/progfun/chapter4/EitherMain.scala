@@ -1,5 +1,7 @@
 package co.com.progfun.chapter4
 
+import co.com.progfun.chapter5.{Cons, Empty}
+
 object EitherMain extends App{
 
   /**
@@ -93,5 +95,15 @@ object EitherMain extends App{
   //acá solo sale un error a la vez, muy aburridor para el caso en que existan varios
   //cómo lo mejoraría?, haría otro tipo de dato?
   println("Full mistake  =>  "+mkPerson("", -31))
+
+  /*
+  def cualquierFuncion(x:Int) = {println("cualquierFuncion"); x}
+  def cualquierFuncion2(x:Int) = {println("cualquierFuncion"); x}
+  val x = Cons(() => cualquierFuncion(x) , Cons(6, Empty) )
+  println(x.headOption)
+  println(x.headOption)*/
+
+
+
 
 }
