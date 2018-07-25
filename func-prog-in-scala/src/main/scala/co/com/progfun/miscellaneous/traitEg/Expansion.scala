@@ -14,8 +14,6 @@ object Expansion {
 
 def exponential(x:Double, exp:Int): Double = {
   def loop(x:Double, exp:Int, acc: Double): Double = {
-    //println("exp "+exp + " acc "+acc)
-
     if(exp<=0) 1
     else if(exp==1) acc
     else loop(x, exp-1, acc  * x)
@@ -25,7 +23,6 @@ def exponential(x:Double, exp:Int): Double = {
 
   def factorial(n: Double): Double = {
     def loop(n: Double, acc:Double): Double = {
-      //println("n "+ " acc "+acc)
       if (n <= 1) acc
       else loop(n-1, acc * n)
     }
@@ -46,7 +43,7 @@ def exponential(x:Double, exp:Int): Double = {
         loop(nIter-1, acc+result)
       }
     }
-    val v1: Double = loop(10,0)
+    val v1: Double = loop(9,0)
     val v2: String = f"$v1%1.4f"
     v2.replace(",", ".").toDouble
 
