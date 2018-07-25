@@ -14,18 +14,19 @@ object Expansion {
 
 def exponential(x:Double, exp:Int): Double = {
   def loop(x:Double, exp:Int, acc: Double): Double = {
-    println("exp "+exp + " x "+x)
-    if (exp <= 0) 1
+    //println("exp "+exp + " acc "+acc)
+
+    if(exp<=0) 1
     else if(exp==1) acc
-    else loop(x, exp-1, x * x)
+    else loop(x, exp-1, acc  * x)
   }
-  loop(x, exp, 1)
+  loop(x, exp, x)
 }
 
   def factorial(n: Double): Double = {
     def loop(n: Double, acc:Double): Double = {
-      println("facto "+n+ " x ")
-      if (n <= 1) 1
+      //println("n "+ " acc "+acc)
+      if (n <= 1) acc
       else loop(n-1, acc * n)
     }
     loop(n, 1)
@@ -33,18 +34,15 @@ def exponential(x:Double, exp:Int): Double = {
 
 
   def expansion(x: Double):Double = {
-    def loop(nIter:Double, acc:Double):Double = {
-      if(nIter <= 0) {
-        println("va a retornar")
+    def loop(nIter:Int, acc:Double):Double = {
+      if(nIter < 0) {
         acc
       }
       else {
-        val squa = exponential(x, 10)
-        val facto = factorial(x)
+        val squa = exponential(x, nIter)
+        val facto = factorial(nIter)
         val result = (squa / facto)
-        println("sq=> "+squa)
-        println("factorial=> "+facto)
-        println("result=> "+result)
+        println("iter: "+nIter+" ; sq=> "+squa+";  factorial=> "+facto+ "; result=> "+result + "acc => "+ acc)
         loop(nIter-1, acc+result)
       }
     }
@@ -55,6 +53,7 @@ def exponential(x:Double, exp:Int): Double = {
   }
 
   def main(args: Array[String]) {
+
     /*
     val stdin = scala.io.StdIn
 
@@ -65,10 +64,9 @@ def exponential(x:Double, exp:Int): Double = {
       val x = stdin.readLine.trim.toDouble
     }*/
 
-    val v1 = expansion(4.0)
+    val v1 = expansion(20)
     println(":::Test1 ::::")
     println(v1)
-
 
   }
 }
