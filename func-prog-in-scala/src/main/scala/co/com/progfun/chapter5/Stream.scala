@@ -53,6 +53,70 @@ sealed trait Stream[+A]{
     case _ => Empty
   }
 
+  /**
+    * Es non-stric porque usa el operador ||, igual si el primero no pasa lo mismo le va a
+    * aplicar al tail
+    * @param p
+    * @return
+    */
+  def existsV1(p: A => Boolean): Boolean = this match {
+    case Cons(x, xs) => p(x) || xs().existsV1(p)
+    case _ => false
+  }
+
+  /**
+    * Note como se le aplica el lazyness (nonn-Strict)
+    * @param z
+    * @param f
+    * @tparam B
+    * @return
+    */
+  def foldRight[B] (z: => B)(f: (A, => B)=> B) : B = this match {
+    case Cons(h, t) => f(h(), t().foldRight(z)(f))
+    // z es el valor ante un nulo
+    case _ => z
+
+  }
+
+  /**
+    * Implementacion basada en folodR
+    * en la parte (a,b)=>  p(a) || b  'a' Es el valor actual de la lista o head y 'b'
+    * es elresultado en este caso Boolean porque la funcion z así se defini'o para este ejemplo
+    * b es la parte lazy porque si p(a)  da true b nunca se evaluará y el computo termina
+    * @param p
+    * @return
+    */
+  def exists(p: A => Boolean): Boolean = foldRight(false)((a,b)=>   p(a) || b)
+
+  /**
+    * Ejercicio 5.4 del libro
+    * @param p
+    * @return
+    */
+  def forAll(p: A => Boolean): Boolean = foldRight(false)((a,b)=>   p(a) && b)
+
+  /**
+    * Ejercicio 5.5 del libro, take while basadio en fold right
+    * @param p
+    * @return
+    */
+  def takeWhile(p: A => Boolean): Stream[A] = foldRight(Stream.empty)((a,b)=> {
+    if (p(a)) Stream.cons(a,b)
+  })
+
+  /*
+  def takeWhile(p: A => Boolean): Stream[A] = this match {
+    case Cons(h, t) => {
+      if(p(h())) Stream.cons(h(), t().takeWhile(p))
+      else t().takeWhile(p)
+    }
+    case _ => {
+      Stream.empty
+    }
+  }
+
+  */
+
   override def toString: String = this match {
     case Empty => ""
     case Cons(h,t)=> h() + t().toString
