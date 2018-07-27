@@ -60,7 +60,7 @@ sealed trait Stream[+A]{
     * @return
     */
   def existsV1(p: A => Boolean): Boolean = this match {
-    case Cons(x, xs) => p(x) || xs().existsV1(p)
+    case Cons(x, xs) =>  p(x()) || xs().existsV1(p)
     case _ => false
   }
 
@@ -100,9 +100,8 @@ sealed trait Stream[+A]{
     * @param p
     * @return
     */
-  def takeWhile(p: A => Boolean): Stream[A] = foldRight(Stream.empty)((a,b)=> {
-    if (p(a)) Stream.cons(a,b)
-  })
+  def takeWhileFoldR(p: A => Boolean): Stream[A] = foldRight(this)((a,b)=> if (p(a)) Stream.cons(a, b) else b)
+
 
   /*
   def takeWhile(p: A => Boolean): Stream[A] = this match {

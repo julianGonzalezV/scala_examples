@@ -155,4 +155,9 @@ object MainChapter5 extends App {
 
   println("::::::5.3 Separating program description from evaluation::::::::::::::")
 
+
+  println("::::::Take While Fold R::::::::::::::")
+  println(intStream.takeWhileFoldR(_>3).toList)
+  println(intStream.takeWhileFoldR(_%2 == 0).toList)
+
 }
