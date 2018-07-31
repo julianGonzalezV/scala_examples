@@ -160,4 +160,8 @@ object MainChapter5 extends App {
   println(intStream.takeWhileFoldR(_>3).toList)
   println(intStream.takeWhileFoldR(_%2 == 0).toList)
 
+ println("::::::TheadOptionFoldR::::::::::::::")
+ println(intStream.headOptionFoldR)
+ println(Stream.empty.headOptionFoldR)
+
 }

@@ -100,21 +100,16 @@ sealed trait Stream[+A]{
     * @param p
     * @return
     */
-  def takeWhileFoldR(p: A => Boolean): Stream[A] = foldRight(this)((a,b)=> if (p(a)) Stream.cons(a, b) else b)
+  def takeWhileFoldR(p: A => Boolean): Stream[A] = foldRight(Stream[A]())((a,b)=>  if (p(a)) Stream.cons(a, b) else b)
+  def headOptionFoldR: Option[A] = foldRight(Option.empty[A])((x,y)  => Some(x))
 
-
-  /*
-  def takeWhile(p: A => Boolean): Stream[A] = this match {
-    case Cons(h, t) => {
-      if(p(h())) Stream.cons(h(), t().takeWhile(p))
-      else t().takeWhile(p)
-    }
-    case _ => {
-      Stream.empty
-    }
+/*
+ def headOption: Option[A] = this match {
+    case Empty => None
+    case Cons(h,t)=> Some(h())
   }
 
-  */
+ */
 
   override def toString: String = this match {
     case Empty => ""
