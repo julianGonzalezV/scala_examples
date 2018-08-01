@@ -164,4 +164,17 @@ object MainChapter5 extends App {
  println(intStream.headOptionFoldR)
  println(Stream.empty.headOptionFoldR)
 
+
+
+ println("::::::Infinite Streams::::::::::::::")
+ val ones: Stream[Int] = Stream.cons(1, ones)
+ def constante[A](y: A): Stream[A] = Stream.cons(y,constante(y))
+
+ //note lo potente de este ejempplo como no se muere porloop infinito sino que se evalua
+ //lo que se requiere y ya por ser non-strict
+ println(ones.take(3))
+println(constante(7).take(70))
+
+
+
 }

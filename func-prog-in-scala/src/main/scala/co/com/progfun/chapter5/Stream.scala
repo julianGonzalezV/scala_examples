@@ -111,6 +111,8 @@ sealed trait Stream[+A]{
 
  */
 
+  def constante[A](y: A): Stream[A] = Stream.cons(y,constante(y))
+
   override def toString: String = this match {
     case Empty => ""
     case Cons(h,t)=> h() + t().toString
