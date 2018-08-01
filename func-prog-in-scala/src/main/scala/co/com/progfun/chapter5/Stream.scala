@@ -103,6 +103,7 @@ sealed trait Stream[+A]{
   def takeWhileFoldR(p: A => Boolean): Stream[A] = foldRight(Stream[A]())((a,b)=>  if (p(a)) Stream.cons(a, b) else b)
   def headOptionFoldR: Option[A] = foldRight(Option.empty[A])((x,y)  => Some(x))
 
+
 /*
  def headOption: Option[A] = this match {
     case Empty => None
@@ -111,7 +112,7 @@ sealed trait Stream[+A]{
 
  */
 
-  def constante[A](y: A): Stream[A] = Stream.cons(y,constante(y))
+
 
   override def toString: String = this match {
     case Empty => ""

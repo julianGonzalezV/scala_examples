@@ -168,13 +168,20 @@ object MainChapter5 extends App {
 
  println("::::::Infinite Streams::::::::::::::")
  val ones: Stream[Int] = Stream.cons(1, ones)
- def constante[A](y: A): Stream[A] = Stream.cons(y,constante(y))
+ def constante[A, B](a: A)(f: A=> A): Stream[A] = Stream.cons(a,constante(f(a))(f))
 
  //note lo potente de este ejempplo como no se muere porloop infinito sino que se evalua
  //lo que se requiere y ya por ser non-strict
  println(ones.take(3))
-println(constante(7).take(70))
+println(constante(7)(x => x).take(70))
 
+ println("::::::Infinite Sum::::::::::::::")
+ //def sumRange(n: Int): Stream[Int] = Stream.cons(n, sumRange(n+1))
+ def sumRange(n: Int): Stream[Int] = constante(n)(x=> x+1)
+ println(sumRange(4).take(5))
 
+ println("::::::Infinite Fibonacci::::::::::::::")
+
+ //def fiboStream(n): Stream[1] = constante(n)
 
 }
