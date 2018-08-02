@@ -182,6 +182,9 @@ println(constante(7)(x => x).take(70))
 
  println("::::::Infinite Fibonacci::::::::::::::")
 
- //def fiboStream(n): Stream[1] = constante(n)
+
+ def fiboInfinite() = constante(1)(x=> if(x == 0 || x== 1){x+1} else (x-1)+(x) )
+
+ println(fiboInfinite().take(7))
 
 }

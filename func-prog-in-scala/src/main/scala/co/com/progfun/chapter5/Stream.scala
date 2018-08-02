@@ -116,7 +116,7 @@ sealed trait Stream[+A]{
 
   override def toString: String = this match {
     case Empty => ""
-    case Cons(h,t)=> h() + t().toString
+    case Cons(h,t)=> h() + ","+t().toString
   }
 }
 case object Empty extends Stream[Nothing]
