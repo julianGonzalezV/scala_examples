@@ -168,12 +168,12 @@ object MainChapter5 extends App {
 
  println("::::::Infinite Streams::::::::::::::")
  val ones: Stream[Int] = Stream.cons(1, ones)
- def constante[A, B](a: A)(f: A=> A): Stream[A] = Stream.cons(a,constante(f(a))(f))
+ def constante[A, B](a: A)(f: A=> A): Stream[A] = Stream.cons(f(a),constante(f(a))(f))
 
  //note lo potente de este ejempplo como no se muere porloop infinito sino que se evalua
  //lo que se requiere y ya por ser non-strict
  println(ones.take(3))
-println(constante(7)(x => x).take(70))
+println(constante(7)(x => x).take(5))
 
  println("::::::Infinite Sum::::::::::::::")
  //def sumRange(n: Int): Stream[Int] = Stream.cons(n, sumRange(n+1))
@@ -183,8 +183,36 @@ println(constante(7)(x => x).take(70))
  println("::::::Infinite Fibonacci::::::::::::::")
 
 
- def fiboInfinite() = constante(1)(x=> if(x == 0 || x== 1){x+1} else (x-1)+(x) )
+ def fiboInfinite() = constante(0)(x=> {
+  val v1 = x+1
+  val v2 = x+2
+   aux1(v2)
+ })
 
- println(fiboInfinite().take(7))
+def aux1(n:Int) = {
+ println("aux=>"+n)
+ if(n<=2) 1
+ else n
+}
 
+
+ def fibo(n:Int):Int = {
+  println("entra "+n)
+  def loop(n:Int, acc:Int):Int ={
+
+   if(n<=0) acc
+   else{
+    loop(n-1, acc)+loop(n-2, acc)
+   }
+  }
+  loop(n, 1)
+ }
+
+ /**
+ println(fibo(0))
+ println(fibo(1))
+ println(fibo(2))
+ println(fibo(3))*/
+
+ println(fiboInfinite().take(5))
 }
