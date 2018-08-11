@@ -183,18 +183,30 @@ println(constante(7)(x => x).take(5))
  println("::::::Infinite Fibonacci::::::::::::::")
 
 
- def fiboInfinite() = constante(0)(x=> {
-  val v1 = x+1
-  val v2 = x+2
-   aux1(v2)
- })
+ def fiboInfinite() ={
+  def loop(fibo0:Int, fibo1: Int):Stream[Int] = {
+   Stream.cons(fibo0, loop(fibo1, fibo0+fibo1))
+  }
+  loop(0,1)
+ }
 
 def aux1(n:Int) = {
  println("aux=>"+n)
  if(n<=2) 1
  else n
 }
+//recordanto tail recursive
+ def factorial(n:Int):Int = {
+  def loop(n:Int, acc: Int):Int ={
+   if(n<=0) acc
+   else{
+    loop(n-1, acc * n)
+   }
+  }
+  loop(n, 1)
+ }
 
+ println("facto=> "+factorial(4))
 
  def fibo(n:Int):Int = {
   println("entra "+n)
@@ -211,8 +223,8 @@ def aux1(n:Int) = {
  /**
  println(fibo(0))
  println(fibo(1))
- println(fibo(2))
- println(fibo(3))*/
+ println(fibo(2))*/
 
- println(fiboInfinite().take(5))
+ println("fibo=> "+fibo(6))
+ println(fiboInfinite().take(8))
 }
