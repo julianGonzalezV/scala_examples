@@ -77,4 +77,16 @@ def baz: (Int, Foo)
   val db2 = db1._2.double(db1._2)
   println(db1)
   println(db2)
+
+  println(":::::::::intDouble(rng: RNG):::::::::::::::::::")
+  println(rng2.intDouble(rng2))
+
+  println(":::::::::DoubleInt(rng: RNG):::::::::::::::::::")
+  println(rng2.doubleInt(rng2))
+
+  println(":::::::::double3(rng: RNG): ((Double,Double,Double), RNG):::::::::::::::::::")
+  println(rng2.double3(rng2))
+
+  println("::::::::def ints(count: Int)(rng: RNG): (List[Int], RNG):::::::::::::::::::")
+  println(rng2.ints(7)(rng2))
 }

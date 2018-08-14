@@ -12,6 +12,8 @@ trait RNG {
   def doubleInt(rng: RNG): ((Double,Int), RNG)
 
   def double3(rng: RNG): ((Double,Double,Double), RNG)
+
+  def ints(count: Int)(rng: RNG): (List[Int], RNG)
 }
 
 case class SimpleRNG(seed:Long) extends RNG {
@@ -33,12 +35,35 @@ case class SimpleRNG(seed:Long) extends RNG {
   }
 
   override def intDouble(rng: RNG): ((Int,Double), RNG) = {
-
+    val (intV, nextState) = nonNegativeInt(rng)
+    val (doubleVal, nexState) = double(rng)
+    ((intV, doubleVal), nexState)
   }
 
-  override def doubleInt(rng: RNG) = ???
+  override def doubleInt(rng: RNG): ((Double,Int), RNG) = {
+    val ((intV, doubleVal), nexState) = intDouble(rng)
+    ((doubleVal, intV), nexState)
+  }
 
-  override def double3(rng: RNG) = ???
+  override def double3(rng: RNG): ((Double,Double,Double), RNG) = {
+    val (double1, nexState1) = double(rng)
+    val (double2, nexState2) = double(nexState1)
+    val (double3, nexState3) = double(nexState2)
+
+    ((double1, double2, double3), nexState3)
+
+  }
+  override def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    def loop(count: Int)(state: RNG)(result: List[Int]):  (List[Int], RNG) ={
+      if(count<=0) (result, state)
+      else{
+        val (intV, nextState) = nonNegativeInt(state)
+        loop(count-1)(nextState)( intV :: result)
+      }
+    }
+
+    loop(count)(rng)(List.empty)
+  }
 }
 
 case class JulianoRNG(seed:Long) extends RNG {
@@ -58,4 +83,6 @@ case class JulianoRNG(seed:Long) extends RNG {
   override def doubleInt(rng: RNG) = ???
 
   override def double3(rng: RNG) = ???
+
+  override def ints(count: Int)(rng: RNG) = ???
 }
