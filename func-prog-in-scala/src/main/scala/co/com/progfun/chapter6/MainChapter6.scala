@@ -1,5 +1,7 @@
 package co.com.progfun.chapter6
 
+import co.com.progfun.chapter6.MainChapter6.rng2
+
 import scala.util.Random
 
 /**
@@ -89,4 +91,30 @@ def baz: (Int, Foo)
 
   println("::::::::def ints(count: Int)(rng: RNG): (List[Int], RNG):::::::::::::::::::")
   println(rng2.ints(7)(rng2))
+
+
+  println("::::::::6.4 A better API for state actions:::::::::::::::::::")
+  type Rand[+A] = RNG => (A, RNG) //rand es un tipo de dato que recibe un A y retorna una tupla en donde la 1ra pos es del tipo
+  //establecido y el segurndo es el un datoo de tipo RNG
+  val int: Rand[Int] = _.nextInt  //igual que decir = x => x.nextInt, si llamaramos a double fallaría porque no cumplecon la firma
+  def unit[A](a: A): Rand[A] = rng => (a, rng)
+
+  def map[A,B](s: Rand[A])(f: A => B): Rand[B] =
+    rng => {
+      val (a, rng2) = s(rng)
+      (f(a), rng2)
+    }
+
+  println(":::::::nonNegativeInt:::::::::::::::::::")
+  println(rng2.nonNegativeEven(rng2))
+
+
+  println(":::::::randIntDouble::::::::::::::::::::")
+  val randIntDouble1: ((Int, Double), RNG) = rng2.randIntDouble(rng2)
+  //no olvide que la función randIntDouble( es de tipo Rand[(Int, Double)] y Rand[A] es un tipo funcio tal que
+  //RNG => (A, RNG) por eso el tipo para este ejemplo al final recibo  ((Int, Double), RNG)
+  println(randIntDouble1)
+
+  println(":::::::randDoubleInt::::::::::::::::::::")
+
 }

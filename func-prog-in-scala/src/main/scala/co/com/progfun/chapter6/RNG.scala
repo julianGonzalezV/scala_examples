@@ -14,6 +14,48 @@ trait RNG {
   def double3(rng: RNG): ((Double,Double,Double), RNG)
 
   def ints(count: Int)(rng: RNG): (List[Int], RNG)
+
+  type Rand[+A] = RNG => (A, RNG) //rand es un tipo de dato que recibe un A y retorna una tupla en donde la 1ra pos es del tipo
+  //establecido y el segurndo es el un datoo de tipo RNG
+  val int: Rand[Int] = _.nextInt  //igual que decir = x => x.nextInt, si llamaramos a double fallaría porque no cumplecon la firma
+  def unit[A](a: A): Rand[A] = rng => (a, rng)
+
+  def map[A,B](s: Rand[A])(f: A => B): Rand[B] ={
+    rng => {
+      val (a, rng2) = s(rng)
+      (f(a), rng2)
+    }
+  }
+
+  def nonNegativeEven: Rand[Int] =
+    map(nonNegativeInt)(i => i - i % 2)
+
+
+  /**
+    * Funcion para combinar los resulados de dos Rands
+    * @param ra
+    * @param rb
+    * @param f
+    * @tparam A
+    * @tparam B
+    * @tparam C
+    * @return
+    */
+  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] ={
+   rng =>   {
+     val (a, rng1) = ra(rng)
+     val (b, rng2) = rb(rng1)
+     (f(a, b), rng2)
+   }
+  }
+
+  def both[A,B](ra: Rand[A], rb: Rand[B]) = map2(ra, rb)((_, _))  // es lo mismo que decir map2(ra, rb)((x,y) => (x,y))
+
+
+  val randIntDouble: Rand[(Int, Double)] =  both(int, double)
+
+  val randDoubleInt: Rand[(Double, Int)] =  both(double, int)
+
 }
 
 case class SimpleRNG(seed:Long) extends RNG {
@@ -35,9 +77,9 @@ case class SimpleRNG(seed:Long) extends RNG {
   }
 
   override def intDouble(rng: RNG): ((Int,Double), RNG) = {
-    val (intV, nextState) = nonNegativeInt(rng)
-    val (doubleVal, nexState) = double(rng)
-    ((intV, doubleVal), nexState)
+    val (intV, nextState1) = nonNegativeInt(rng)
+    val (doubleVal, nexState2) = double(nextState1)
+    ((intV, doubleVal), nexState2)
   }
 
   override def doubleInt(rng: RNG): ((Double,Int), RNG) = {
