@@ -116,5 +116,17 @@ def baz: (Int, Foo)
   println(randIntDouble1)
 
   println(":::::::randDoubleInt::::::::::::::::::::")
+  val randDoubleInt1: ((Double, Int), RNG) = rng2.randDoubleInt(rng2)
+  println(randDoubleInt1)
+
+
+  println(":::::::EXERCISE 6.7:  PENDIENTE:::::::::::::::::::")
+
+
+
+  println(":::::::nonNegativeLessThan(n:::::::::::::::::::")
+  val negLessT = rng2.nonNegativeLessThan(6)(rng2)
+  println(negLessT)
+  println(negLessT._2.nonNegativeLessThan(6)(negLessT._2))
 
 }
