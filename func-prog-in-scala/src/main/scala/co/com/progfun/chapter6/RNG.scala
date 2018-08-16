@@ -59,14 +59,28 @@ trait RNG {
 
   def nonNegativeLessThanV1(n: Int): Rand[Int] = map(nonNegativeInt) { _ % n }
 
+  /**
+    * Problema: Devuelve un Rand de Any en ??? necesitamos pasarle yn rng pero no
+    * lo tenemos
+    * @param n
+    * @return
+    */
+  def nonNegativeLessThanV2(n: Int): Rand[Any] = {
+    map(nonNegativeInt) { i =>
+      val mod = i % n
+      if (i + (n-1) - mod >= 0) mod else nonNegativeLessThan(n)(???)
+  }
 
-  def nonNegativeLessThan(n: Int): Rand[Int] = { rng =>
+    //solucion al problema anterior
+  def nonNegativeLessThan(n: Int): Rand[Int] = {
+    rng =>
     val (i, rng2) = nonNegativeInt(rng)
     val mod = i % n
     if (i + (n-1) - mod >= 0)
       (mod, rng2)
     else nonNegativeLessThan(n)(rng)
   }
+
 
 }
 
