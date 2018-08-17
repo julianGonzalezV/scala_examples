@@ -57,30 +57,75 @@ trait RNG {
   val randDoubleInt: Rand[(Double, Int)] =  both(double, int)
 
 
+  /*
+  Nota: no enrredarse acá con las llaves lo siguiente es lo mismo que map(nonNegativeInt) ( i=> i % n ) ya que map aplica
+  el concepto de currying
+
+  Parámetro nonNegativeInt: Note que nonNegativeInt devuelve un pair (Int, RNG) y map recibe en su primer parámetro
+  una función  Rand[+A] que es igual a decir que espera "RNG => (A, RNG)", es decir algo que devuelva un pair (A,RNG)
+  por eso nonNegativeInt cumple con la firma, es heavy pero ahí vamos
+   */
   def nonNegativeLessThanV1(n: Int): Rand[Int] = map(nonNegativeInt) { _ % n }
 
+
   /**
-    * Problema: Devuelve un Rand de Any en ??? necesitamos pasarle yn rng pero no
-    * lo tenemos
+    * Problema: Devuelve un Rand de Any en ??? necesitamos pasarle yn rng, porque nonNegativeLessThan es de tipo rand entonces
+    * es como tener realmente nonNegativeLessThan(n:Int)(RNG[A] => (A,RNG) .Pero no
+    * lo tenemos solo tenemos un i que es de
     * @param n
     * @return
     */
-  def nonNegativeLessThanV2(n: Int): Rand[Any] = {
+  def nonNegativeLessThanV2(n: Int)  =
     map(nonNegativeInt) { i =>
       val mod = i % n
       if (i + (n-1) - mod >= 0) mod else nonNegativeLessThan(n)(???)
-  }
+    }
 
     //solucion al problema anterior
+  /*
+  No olvide que el tipo de retorno de esta función es un Rand[Int]  es decir un una fucnión del tipo
+  RNG => (Int, RNG) porque así lo dice la implementación de Rand por eso inicia con rng =>
+  Por ejemplo si fuera Int=> Int el retorno entonces rng abajo sería de tipo Int (dato de entrada)
+   */
   def nonNegativeLessThan(n: Int): Rand[Int] = {
     rng =>
     val (i, rng2) = nonNegativeInt(rng)
     val mod = i % n
     if (i + (n-1) - mod >= 0)
       (mod, rng2)
-    else nonNegativeLessThan(n)(rng)
+    else nonNegativeLessThan(n)(rng2) //en el libro dice rng pero yo creo que es rng2 para que siempre se llama
+        //a la función con otro estado en lugar del mismo, pues siempre va a retornar el mismo
+    /*si por algun motivo existen numeros mayores que el mayor multiplo de n, por ejemplo que
+      Int.Max no sea divisible exactemente en en entonces podríapasar.
+        En fin si llega a pasar entonces lo que se hace es volver a intentar generar un nuevo nonNegativeLessThan */
   }
 
+
+  def nonNegativeLessThanFMap(n: Int):Rand[Int]  = {
+    rng => {
+      flatMap(this)(nonNegativeInt(rng))
+    }
+  }
+
+
+/*
+f es = RNG => (A,RNG)
+g = A => RNG => (B,RNG)  es decir (x:A)(y:RNG):
+ */
+    def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = {
+      rng => {
+        val (a, rng2) = f(rng)
+        val (b, rng3) = g(a)(rng2)
+        (b, rng3)
+      }
+    }
+
+  def map[A,B](s: Rand[A])(f: A => B): Rand[B] ={
+    rng => {
+      val (a, rng2) = s(rng)
+      (f(a), rng2)
+    }
+  }
 
 }
 
