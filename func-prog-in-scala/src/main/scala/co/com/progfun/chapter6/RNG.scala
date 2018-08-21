@@ -20,15 +20,12 @@ trait RNG {
   val int: Rand[Int] = _.nextInt  //igual que decir = x => x.nextInt, si llamaramos a double fallaría porque no cumplecon la firma
   def unit[A](a: A): Rand[A] = rng => (a, rng)
 
-  def map[A,B](s: Rand[A])(f: A => B): Rand[B] ={
-    rng => {
-      val (a, rng2) = s(rng)
-      (f(a), rng2)
-    }
+
+
+  def nonNegativeEven: Rand[Int] ={
+    map(nonNegativeInt(_))(i => i - i % 2)
   }
 
-  def nonNegativeEven: Rand[Int] =
-    map(nonNegativeInt)(i => i - i % 2)
 
 
   /**
@@ -65,7 +62,7 @@ trait RNG {
   una función  Rand[+A] que es igual a decir que espera "RNG => (A, RNG)", es decir algo que devuelva un pair (A,RNG)
   por eso nonNegativeInt cumple con la firma, es heavy pero ahí vamos
    */
-  def nonNegativeLessThanV1(n: Int): Rand[Int] = map(nonNegativeInt) { _ % n }
+  def nonNegativeLessThanV1(n: Int): Rand[Int] = map(nonNegativeInt(_)) { _ % n }
 
 
   /**
@@ -76,7 +73,7 @@ trait RNG {
     * @return
     */
   def nonNegativeLessThanV2(n: Int)  =
-    map(nonNegativeInt) { i =>
+    map(nonNegativeInt(_)) { i =>
       val mod = i % n
       if (i + (n-1) - mod >= 0) mod else nonNegativeLessThan(n)(???)
     }
@@ -101,17 +98,19 @@ trait RNG {
   }
 
 
-  def nonNegativeLessThanFMap(n: Int):Rand[Int]  = {
+  /*
+  def nonNegativeLessThanFMap(n: Int)  = {
     rng => {
-      flatMap(this)(nonNegativeInt(rng))
+      val (i, rng2) = nonNegativeInt(rng)
+      flatMap(rng)(rng2)
     }
-  }
+  }*/
 
 
-/*
-f es = RNG => (A,RNG)
-g = A => RNG => (B,RNG)  es decir (x:A)(y:RNG):
- */
+  /*
+  f es = RNG => (A,RNG)
+  g = A => RNG => (B,RNG)  es decir (x:A)(y:RNG):
+   */
     def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = {
       rng => {
         val (a, rng2) = f(rng)
@@ -127,6 +126,8 @@ g = A => RNG => (B,RNG)  es decir (x:A)(y:RNG):
     }
   }
 
+
+
 }
 
 case class SimpleRNG(seed:Long) extends RNG {
@@ -137,6 +138,11 @@ case class SimpleRNG(seed:Long) extends RNG {
       (n, nextRNG)
   }
 
+  /**
+    * Devuelve randoms siempre positivos
+    * @param rng
+    * @return
+    */
   override def nonNegativeInt(rng: RNG): (Int, RNG) = {
     val v1: (Int, RNG) = rng.nextInt
     (math.abs(v1._1), v1._2)
