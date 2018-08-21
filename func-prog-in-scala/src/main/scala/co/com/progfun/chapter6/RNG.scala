@@ -100,12 +100,12 @@ trait RNG {
         En fin si llega a pasar entonces lo que se hace es volver a intentar generar un nuevo nonNegativeLessThan */
   }
 
-
+/*
   def nonNegativeLessThanFMap(n: Int):Rand[Int]  = {
     rng => {
       flatMap(this)(nonNegativeInt(rng))
     }
-  }
+  }*/
 
 
 /*
