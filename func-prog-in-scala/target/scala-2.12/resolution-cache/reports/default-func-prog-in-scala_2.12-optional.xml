@@ -6,8 +6,8 @@
 		module="func-prog-in-scala_2.12"
 		revision="0.1"
 		conf="optional"
-		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20180619090819"/>
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
+		date="20180822075639"/>
 	<dependencies>
 	</dependencies>
 </ivy-report>
