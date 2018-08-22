@@ -29,20 +29,18 @@ object MainChapter7 {
 
   con lo anterior sum parallel quedaría:
 
+   */
+
   def sumParaV1(ints: IndexedSeq[Int]): Int ={
     if (ints.size <= 1) ints.headOption getOrElse  0
     else{
       val (left, right) = ints.splitAt(ints.length/2)
-      val sumL = Par.unit(sumParaV1(left))
-      val sumR = Par.unit(sumParaV1(right))
+      val sumL = ParI.unit(sumParaV1(left))
+      val sumR = ParI.unit(sumParaV1(right))
 
       Par.get(sumL) + Par.get(sumR)
     }
   }
-
-
-   */
-
 
 
   def main(args: Array[String]): Unit = {

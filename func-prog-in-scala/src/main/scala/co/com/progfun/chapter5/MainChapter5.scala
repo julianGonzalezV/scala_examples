@@ -12,7 +12,7 @@ object MainChapter5 extends App {
   println(l1)
 
   /**
-    * Todo lo que hemos escrit del chapter 1 - 4 ha sido Strict, po defecto las funciones en la mayoría de los lenguajes es
+    * Todo lo que hemos escrito del chapter 1 - 4 ha sido Strict, por defecto las funciones en la mayoría de los lenguajes son
     * así, ya que se requieren sus valores resueltos.
     */
   /**

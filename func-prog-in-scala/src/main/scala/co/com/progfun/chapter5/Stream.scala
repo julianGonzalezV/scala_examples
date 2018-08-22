@@ -122,7 +122,7 @@ sealed trait Stream[+A]{
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h:() => A, t: () => Stream[A]) extends Stream[A]
 
-
+//companion object, es que realmente se inatancia
 object Stream {
   def empty[A]: Stream[A] = Empty
 
