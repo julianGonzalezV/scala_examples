@@ -35,10 +35,11 @@ object MainChapter7 {
     if (ints.size <= 1) ints.headOption getOrElse  0
     else{
       val (left, right) = ints.splitAt(ints.length/2)
-      val sumL = ParI.unit(sumParaV1(left))
-      val sumR = ParI.unit(sumParaV1(right))
+      val sumL = Par.unit(sumParaV1(left))
+      val sumR = Par.unit(sumParaV1(right))
+      val v1 = Par.run(sumL)
 
-      Par.get(sumL) + Par.get(sumR)
+      Par.run(sumL).get() + Par.run(sumR).get()
     }
   }
 
