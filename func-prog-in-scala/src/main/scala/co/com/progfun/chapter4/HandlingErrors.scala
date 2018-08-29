@@ -345,7 +345,8 @@ Option[Animal]).
     println("Option composition and lifting:::::::::::::LIFTING EG1")
     /*
     Note lo bacano que es el lifting, que nos ofrece la propiedad de llevar funciones que trabajan con otros tipos que no son options o que
-    no estan emvueltos en un option y las convierte a que si se puedan manejar con option, mire como no se modificó para nada
+    no estan envueltos en un option (O CUALQUIER OTRO TIPO QUE NECESITEMOS NO SOLO Option, en el capítulo 7 se muestra como
+    se hace lift a Par[A] def map[A,B](pa: Par[A])(f: A => B): Par[B] )y las convierte a que si se puedan manejar con option, mire como no se modificó para nada
     mathabs de java sino que que le hizo lifting. Lo anterior puede aplicarse a cualquier función :)
      */
     println(HandlingErrors.abs0(Some(-3)))
