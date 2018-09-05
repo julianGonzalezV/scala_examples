@@ -16,11 +16,9 @@ Animal = Cat + Dog
 es decir, un Animal solamente puede ser, o un Cat, o un Dog.
 
 
-En cuanto al producto, podr�amos definirlo como el conjunto de atributos que componen una instancia de un cierto tipo. Por ejemplo:
+En cuanto al producto, podríamos definirlo como el conjunto de atributos que componen una instancia de un cierto tipo. Por ejemplo:
 
 case class Student(name: String, age: Int)
-expresado como suma de productos, es como sigue:
-
-
+se expresaría como sigue:
 Student = String * Int
 Es decir, para construir el tipo Student hace falta un String y un Int.
