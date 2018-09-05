@@ -112,6 +112,10 @@ object Par {
           if(li.isEmpty) acc
           else loop(li.tail, map2(acc, li.head)((x,y)=> x :+ y))
         }
+
+        s => {
+          s
+        }
         loop(ps, Par[List])
       }
 
@@ -123,8 +127,10 @@ object Par {
         * @return
         */
       def parFilter[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
-        val v1: List[A] = as.filter(elem => f(elem))
-        Par(v1)
+        s => s.
+
+        /*val v1: List[A] = as.filter(elem => f(elem))
+        Par.unit(v1)*/
       }
 
       //a diferencia de unit acá marca "a"  para ser ejecutada concurrentemente
