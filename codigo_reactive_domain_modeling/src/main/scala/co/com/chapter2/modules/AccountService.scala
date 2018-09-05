@@ -65,7 +65,7 @@ trait AccountService {
 
 
   /**
-    * Apuntarle a estas soluciones es acercarse mas a lo fucional, y voy a poder hacer
+    * Apuntarle a estas soluciones es acercarse mas a lo funcional, y voy a poder hacer
     * composicion etc
     * @return
     */

@@ -1,0 +1,25 @@
+Tipo de dato algebraico 
+--***************************
+>Algebraic data type.
+
+
+
+>Managing exceptions is a key component of reactive models—you need to ensure that a
+failing component doesn’t bring down the entire application. And managing latency is another
+key aspect that you need to take care of—unbounded latency through blocking calls in your
+application is a severe antipattern of good user experience. Luckily, Scala covers both of them
+by providing abstractions as part of the standard library.
+
+
+>>Usar constructores tales como Try and Future to model the effects of exceptions
+and latency, respectively.
+
+>>Try provee un Sum Type : Una de sus variantes es Failure.
+		Abstrae o extrae la excepción que nuestra computación puede generar ¿
+		Envuelve el effect dentro del el mismo, brindando una interfaz(medio de comunicación)  funcional pura al usuario para el tratamiento de este
+		En resumen es una monada!
+		
+>>Para manejo de latencia : Usar la mondad Future que envuelve la computación y la ejecuta en un hilo aparte.
+
+
+

@@ -1,0 +1,21 @@
+Monoides: Me gusta la definición algebraíca (es uno de los conceptos de teoría de categorías):
+
+
+Dice que es una estructura algebraica con las siguientes cualidades:
+> compuesta por un elemento neutro,  
+> una operación binaria 
+> es asociativa
+
+Le dice el patron de diseño ubicuo en el libro 
+
+
+Pasos para empezar a crear abstracciones:
+
+>Tener los casos de uso específicos implementados.
+>Descubrir las caracteristicas comunes entre ellos (estructura, comportamiento).
+>Identificar las abstracciones genéricas(el algebra, que es la parte reusable de un patron) de las computaciones realizadas y que pueden ser especializadas.
+
+
+
+Ejemplo del banco:
+

@@ -1,0 +1,26 @@
+ADT: https://scalerablog.wordpress.com/2016/09/28/tipos-de-datos-algebraicos-en-scala/
+Es para expresar tipos de datos 
+y cuando se habla de algebraic se refiere a sumas y productos de tipos.
+
+
+Suma:
+
+
+sealed trait Animal
+case object Cat extends Animal
+case object Dog extends Animal
+estamos formulando un coproducto de tipos:
+
+
+Animal = Cat + Dog
+es decir, un Animal solamente puede ser, o un Cat, o un Dog.
+
+
+En cuanto al producto, podríamos definirlo como el conjunto de atributos que componen una instancia de un cierto tipo. Por ejemplo:
+
+case class Student(name: String, age: Int)
+expresado como suma de productos, es como sigue:
+
+
+Student = String * Int
+Es decir, para construir el tipo Student hace falta un String y un Int.

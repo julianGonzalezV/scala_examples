@@ -1,0 +1,7 @@
+*.class
+
+.idea/workspace.xml
+
+.idea/*
+/project/*
+target/*

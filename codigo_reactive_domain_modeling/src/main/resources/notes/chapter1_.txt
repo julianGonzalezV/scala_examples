@@ -1,0 +1,253 @@
+--**********************************
+preguntas:
+
+
+
+
+What is a domain model?:
+Dominio es el área de interés que involura terminologías propias de esa área y que me lleva a 
+>abstracciones que diseño para construir el modelo de negocio.
+>Implementar los comportaminetos propios del dominio
+
+Mejor dicho es el blueprint de las relaciones de los diferentes entidades del problema
+>Objetos. ;Banco, cuenta, transacción.
+>Comportamiento de esos objetos: debitar, consignar, trasladar.
+>El lenguaje que el dominio habla. Debito, credito, portafolio
+>El contexto dentro del cual el dominio opera: Supociciones y restricciones del dominio del problema 
+	Ejemplo: Reglas asociadas en la creación de una cuenta bancaria etc..
+	
+	
+essential complexities: Complejidades propias del negocio (son propias del core): Determinar la cantidad del un préstamo etc.
+
+
+incidental complexities: Complejidades que surgen de la solución que se dá , por ejemplo cuando desarrollo alguna solución y esto está causando una
+afectación del permformance. ESTAS SON LAS QUE SE BUSCAN ATACAR con técnicas apropiadas para reducirlas.
+Ejemplo dividiendo la implementación en diferentes componentes pero manteniendo la comunicación entre ellos 
+dicha división resulta muy útil a la hora de mantenimiento, atacar problemas , los componentes definene su propio contrato , reglas etc 
+conoce el lenguaje del dominio y demás.
+
+
+--**********************************************************++
+1.2 Introducing domain-driven design 
+	La idea es que un usuario entienda nuestro modelo, sí entendemos bien el negocio entonces podemos abstraer las características importantes 
+	, todo éste proceso es conocido como domain-driven design (DDD) algo así como diseño orienado al dominio.
+	
+1.2.1 The bounded context::::::::::::::::::::::::::::::
+	>habla de que el sistema como tal es un modelo modular en el que cada modulo ES UN MODELO O BOUNDED CONTEXT sabe lo que hace (altamente cohesivo) y se comunica con los demás típicamente 
+	por servicios (tratando de aplicar el bajo acoplamiento), 
+	
+	El Modelo de Dominio Completo es realmente una colección de bounded contexts.
+	
+
+1.2.2 The domain model elements:::::::::::::::::::::::::
+Vamos a ver:
+	-Entities.
+	-value objects.
+	-Service.
+
+
+>Son los elementos y las relaciones que conforman mi modelo , por ejemplo , en el caso del banco.
+
+-Cuenta: Es un Entity porque tienen una indentidad(número de cuenta), así existan 2 con el mismo titulo siempre van a ser diferentes por su número de cuenta.
+-Address: Es un Value Object porque no tiene un identity como tal sino que su valor en si es lo que lo hace distinguir de los demás. Son 
+inmutables, no se puede cambiar una vez los creas.
+
+
+	En resumen:
+	-Un ENTITY tiene un identity que NO puede cambiar, sino sería otra ref diferente.
+		>Además es semanticamentre mutable pero la idea es que se implemente con estructruas inmutables 
+		>Puede contener otros Entities o Value Objects.
+		
+	-Un OBJECT tiene un valor que NO puede cambiar.
+
+	
+
+
+Nota:
+Referencias mutables a menudo presentan mayor performance PERO el costo es cuando existe concurrencia.
+
+SÍ NECESITAMOS MEJORAR EL PERFORMANCE DE NUESTRO CÓDIGO VÁMONOS POR MUTABILIDAD PERO DEBEMOS ASEGURARNOS QUE EL API QUE EXPONGAMOS 
+NO VEA DICHA MUTABILIDAD, Es decir encapsularla en una función wrapper de referecia transparente ----CONFUSO...???
+	referecia transparente ??? Que sea estático?? 
+	
+El centro de atención de cualquier Modelo de Dominio son sus comportamientos o sus interacciones con otros elementos del modelo.
+>Los COMPORTAMIENTOS se localizan en un nivel más alto de granularidad que los Entities o value objects.
+
+>Lo que se hace es modelar un comportamiento específico(entities, value objects y sus relaciones ) . Por ejemplo una transferencia bancaria:
+	>validar fondos en la cuenta origen.
+	>La cuenta destino está activa?
+	>.....
+	>Finalmente en DDD se modela el comportamiento en un Servicio o multiples servicios, en donde sus carateristicas son
+		More macro-level abstraction than entity or value object
+		Involves multiple entities and value objects
+		Usually models a use case of the business
+
+???? En la pg 11 entonces cual sería el bounded context? cáda servicio? (debit, credit)???
+R/ Yo creería que es todo el Banking Service.
+
+Tener en cuenta:
+	>Según el bounded Context es que se define si un elemento es una Entity o un Value Object
+		ejemplo en geocodificación en donde address tiene latitud/longitud entonces address pasa a ser Entity !!.
+	
+	
+1.2.3 Lifecycle of a domain object:::::::::::::::::::::::::
+Un objeto es un Entity o Value object y para cada uno de estos que SE TENGA EN EL DOMINIO se debe tener un PATRON DEFINIDO PARA EL CICLO DE VIDA DE ESTOS.
+, es decir que para cada uno se debe definir la forma de manerjar los siguientes eventos:
+	>Creación: Abstracciones especiales para crear los objetos de nuestro sistema
+	>participación en comportamientos: Definir como los objetos se representan en memoria y las relaciones (contiene, usa )
+	>Persistencia:  Cómo los objectos se van a persistir??  Sí es BD como los vamos a insertar, eliminar..
+	
+
+LO RECOMENDADO ENTONCES ES APEGARNOS AL USO DE:
+	
+::Factories:::
+	>Todo el código creacional está en un sólo lugar
+	>Abstrae el proceso de creación y retorna diferentes tipos de objetos dependiendo del parámetro que se le pase.
+	
+Dos formas de implementarlo en Scala:
+1- Hacer el factory como parte del módulo que define el OBJETO DEL DOMINIO.
+		trait Account {
+			//..
+		}
+		case class CheckingAccount(/* parameters */) extends Account
+		
+		case class SavingsAccount(/* parameters */) extends Account
+		
+		case class MoneyMarketAccount(/* parameters */) extends Account
+		
+		object Account {
+		def apply(/* parameters */) = {
+			// instantiate Checking, Savings or MoneyMarket account
+			// depending on parameters
+		}
+		}
+	
+	
+2- implementarlo como parte de un conjunto de SERVICES del dominio. CAÍTULO 2.
+
+
+un sertvice modela un caso de uso!!
+
+:::AGGREGATES:::
+Core account-identifying attributes such as the account number
+¦ Various nonidentifying attributes such as holders’ names, the date when the
+account was opened, and the date of closing (if it’s a closed account)
+¦ Reference to other objects, such as Address and Bank
+
+
+	Una vez se identifica Conjunto de objetos que participan Y los ítems anteriores entonces todos este panorama /gráfico
+	se convierte en un AGGREGATE.
+
+-Aggregate root: Una de las principales entidades dentro de un AGGREGATES, es un guardian del graph completo (aggregate).
+es el punto de mediación entre el Aggregate y los clientes que lo usan.
+	>Impide que se vea la implementación del aggregate, actuando como una FACHADA.
+	>Asegura la consistencias de las reglas de negocio y las transacciones dentro del aggregate.
+		???? Quiere decir que evita que transacciones cuncurrentes afecten o causen el side effect
+		
+		
+ESTUDIAR:   Effective Aggregate Design”
+
+?????  pregunta pero por que def en los elementos que contiene? y no val?
+eS POR CASUALIDAD LO QUE PERMITE que se cree un entity como una estructura inmutable pero que a su vez permita cambiar algunos de sus 
+atributos?
+
+
+
+ejemplo
+trait Account {//CONTRATO BÁSICO
+def no: String
+def name: String
+def bank: Bank
+def address: Address
+def dateOfOpening: Date,
+def dateOfClose: Option[Date]
+//..
+}
+case class CheckingAccount(//CONCRETE IMPLEMENTATION
+no: String,
+name: String,
+bank: Bank,
+address: Address,
+dateOfOpening: Date,
+dateOfClose: Option[Date],
+//..
+) extends Account
+
+case class SavingsAccount(
+//..
+rateOfInterest: BigDecimal,
+//..
+) extends Account
+trait AccountService {
+def transfer(from: Account, to: Account, amount: Amount): Option[Amount]
+}
+	
+
+>Al usar case classes es una estrategia idea para diseñar objetos que ofrecen inmutabilidad, todos los parámetros que recibe son inmutable por defecto 
+case classes are conveniently used to model immutable data structures.
+	
+En la realidad se ha encontrado con que se debe optimizar  un Aggregate class y lo que se ha hecho es cambiar algunos entities completos 
+como Bank arriba y solo tener un valueObject con el valor.
+
+De lo anterior:
+Case class  ofrece inmutables Objects,porque los parámetros que recibe son inmutables These are known as algebraic data types,
+trait ofrece la modularización en scala , que a su vez permite composición (formar componer y empezar a implementar mixing 
+
+
+>La idea de cuando se habla de permitir modificación NO SE DEBE CONFUNDIR CONQUE ESTAMOS SIENDO MUTABLES sino que LO QUE SUCEDE AL momento de 
+modificar un parámetro es que se crea una instancia nueva.
+ 
+
+REPOSITORIES:
+Cuando  tenemos los objetos en memoria entonces aveces los necesitamos después para algo, cuando estaos como en el mismo context ejempl oque todo el 
+tiempo estamos en el contexto de Account (create, delete etc).Repositories Nos brinda esa manera de parquear los objetos.
+
+
+
+trait AccountRepository {
+def query(accountNo: String): Option[Account]
+def query(criteria: Criteria[Account]): Seq[Account]
+def write(accounts: Seq[Account]): Boolean
+def delete(account: Account): Boolean
+}
+
+
+eL Repository NO SABE de como es la naturaleza del persistence storage, puede ser NoSQL y Relacional.
+
+
+
+	
+
+1.2.4 The ubiquitous language: Es usar un lenguaje dentro del modelado, cosa que si una persona curiosa le da por mirar que hace
+se entienda y no sea ambiguo.
+
+1.3 Thinking functionally
+
+Sometimes, the elegant implementation is just a function. Not a method. Not a class. Not a framework.
+Just a function.
+
+
+
+
+
+La respuesta en la pg 25 De la pregunta en la pg 24 es incorrecta cierto????
+
+
+
+>>Modelar estado inmutables con ADT (cases clases)
+>>Modelar comportamientos en funciones dentro de módulos
+>>Comportamientos en módulos operan sobre ADT que ellos representan.
+>>Módulos se implementan como traits en scala.
+>>
+
+
+
+pg 27 muestra una mejor implementación
+
+>>Usan copy(más por el lado funcional) en lugar de new xx (objectual)
+
+
+Case class models an ADT in Scala.
+
+
+
