@@ -2,6 +2,6 @@
 
 .idea/workspace.xml
 
-.idea/**
+.idea/*
 /project/*
 target/*
